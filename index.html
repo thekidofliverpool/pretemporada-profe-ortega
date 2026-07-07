@@ -135,7 +135,7 @@
   .rpe{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
   .rpe button{flex:1;min-width:30px;padding:9px 0;border-radius:8px;border:1px solid var(--line-2);background:transparent;color:var(--dim);font-family:var(--mono);font-weight:700;font-size:13px;cursor:pointer;transition:all .12s}
   .rpe button.sel{background:var(--volt);border-color:var(--volt);color:#0c1711}
-  textarea,input[type=number]{width:100%;background:#0e1a13;border:1px solid var(--line-2);border-radius:10px;color:var(--chalk);font-family:var(--body);font-size:14px;padding:11px 12px;resize:vertical}
+  textarea,input[type=number],input[type=text]{width:100%;background:#0e1a13;border:1px solid var(--line-2);border-radius:10px;color:var(--chalk);font-family:var(--body);font-size:14px;padding:11px 12px;resize:vertical}
   textarea:focus,input:focus{outline:none;border-color:var(--volt)}
   textarea{min-height:58px;margin-bottom:14px}
 
@@ -248,6 +248,13 @@
   .nav-i span{font-size:9.5px;letter-spacing:.04em;font-weight:600;text-transform:uppercase}
   .nav-i.act{color:var(--volt)}
 
+  .nres-cat{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin:10px 2px 4px}
+  .nres-note{font-size:12.5px;color:var(--dim);padding:8px 2px;line-height:1.5}
+  .nres-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:var(--pitch-2);margin-top:7px;cursor:pointer}
+  .nres-row:active{border-color:rgba(200,242,60,.4)}
+  .nres-row .nn{font-size:13.5px;font-weight:600;line-height:1.3}
+  .nres-row .nb{font-size:11px;color:var(--dim);margin-top:2px}
+  .nres-row .nk{font-family:var(--mono);font-size:11.5px;color:var(--volt);flex:none;white-space:nowrap}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -377,44 +384,34 @@
       <div class="eyebrow">Datos</div>
       <button class="btn btn-ghost" id="reset-btn" style="margin-top:4px">Reiniciar todos mis datos</button>
       <p class="note">Profe Ortega es tu plan de pretemporada personal. Marca cada sesión, registra tus números y vela tu progreso semana a semana. El plan es una guía: si hay fatiga o molestias, ajusta y descansa. Llegas al 24 de agosto hecho un avión.</p>
+    </section>
     <section class="view" id="v-nutri">
-      <div class="eyebrow first">Nutrición</div>
-      <p class="note" style="text-align:left;margin:0 2px 8px">Para <b style="color:var(--chalk)">72,5 kg · 1,79 m</b>, entrenando fuerte. Objetivo: <b style="color:var(--chalk)">comer suficiente y de calidad, no recortar.</b> Estás delgado — tu riesgo es quedarte corto, no pasarte.</p>
-
-      <div class="eyebrow">Tus macros · día de entreno</div>
-      <div class="stats">
-        <div class="stat"><div class="sv">~3.000<small> kcal</small></div><div class="sl">Energía</div></div>
-        <div class="stat"><div class="sv">~130<small> g</small></div><div class="sl">Proteína</div></div>
-        <div class="stat"><div class="sv">~420<small> g</small></div><div class="sl">Carbohidratos</div></div>
-        <div class="stat"><div class="sv">~90<small> g</small></div><div class="sl">Grasa</div></div>
+      <div class="eyebrow first">Nutrición · hoy</div>
+      <p class="note" style="text-align:left;margin:0 2px 8px">Apunta lo que comes y ve en directo cuánto llevas y cuánto te falta. Para <b style="color:var(--chalk)">72,5 kg</b>. Objetivo: <b style="color:var(--chalk)">llegar a las metas, no recortar.</b></p>
+      <div class="pills" id="nutri-daytype">
+        <div class="pill act" data-dt="entreno"><div class="pn">Día entreno</div><div class="pw">~3.000 kcal</div></div>
+        <div class="pill" data-dt="descanso"><div class="pn">Día descanso</div><div class="pw">~2.400 kcal</div></div>
       </div>
-
+      <div id="nutri-progress"></div>
+      <div id="nutri-reco"></div>
+      <div class="eyebrow">Lo que has comido hoy</div>
+      <div id="nutri-log"></div>
+      <div class="eyebrow">Añadir comida</div>
+      <div id="nutri-add"></div>
+      <div class="eyebrow">Guía rápida</div>
       <div class="card">
-        <div class="rpe-lab" style="margin-bottom:8px">Entreno duro vs descanso</div>
-        <div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Día de entreno / partido:</b> ~2.900–3.200 kcal, carbos altos (~400–500 g) para rendir y recuperar.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Día de descanso:</b> ~2.600–2.800 kcal, baja los carbos (~250 g), mantén la proteína (~130 g).</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">La proteína y la grasa casi no cambian; lo que sube y baja es el <b>carbo</b> según la carga del día.</div></div>
+        <div class="rpe-lab" style="margin-bottom:8px">Metas del día</div>
+        <div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Entreno:</b> ~3.000 kcal · 130 g proteína · 420 g carbos · 90 g grasa.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Descanso:</b> ~2.400 kcal · 130 g proteína · 300 g carbos · 75 g grasa.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Lo que cambia día a día es sobre todo el <b>carbo</b>; proteína y grasa casi igual.</div></div>
       </div>
-
       <div class="card">
-        <div class="rpe-lab" style="margin-bottom:8px">De dónde salen los números</div>
-        <div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Proteína:</b> 72,5 kg × 1,6–2,0 g = 116–145 g → objetivo <b>~130 g</b>.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Grasa:</b> ~1 g/kg mínimo = ~73 g → <b>80–100 g</b> (hormonas y salud).</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Carbos:</b> 72,5 kg × 5–7 g = <b>360–500 g</b> (más en días duros).</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Energía:</b> BMR estimado (Mifflin) ≈ 1.720 kcal × actividad 1,7–1,85 ≈ <b>2.900–3.200 kcal</b> en días de entreno.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Es una <b>estimación</b>, no una cifra exacta. El chequeo real es la báscula.</div></div>
+        <div class="rpe-lab" style="margin-bottom:8px">Ejemplo de un día</div>
+        <div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Desayuno:</b> avena + leche + plátano + 2 huevos + tostada con aguacate.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Media mañana:</b> yogur griego + fruta + frutos secos.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Comida:</b> pollo o ternera (180 g) + arroz (100 g seco) + verduras + aceite.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Pre-entreno:</b> plátano + tostada con miel.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Post-entreno:</b> batido o pechuga + arroz o patata + fruta.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Cena:</b> pescado o carne (150 g) + patata o pasta + ensalada.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Antes de dormir:</b> yogur griego o queso fresco.</div></div>
       </div>
-
-      <div class="eyebrow">Ejemplo de un día (~3.000 kcal)</div>
-      <div class="card">
-        <div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Desayuno:</b> avena (80 g) + leche + plátano + 2 huevos + tostada con aguacate + café.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Media mañana:</b> yogur griego + fruta + puñado de frutos secos.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Comida:</b> pollo o ternera (180 g) + arroz (100 g en seco) + verduras + aceite de oliva.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Pre-entreno (1-2 h antes):</b> plátano + tostada con miel, o unos dátiles.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Post-entreno (1 h después):</b> batido de proteína o pechuga + arroz o patata + fruta.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Cena:</b> pescado o carne (150 g) + patata o pasta + ensalada + aceite.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Antes de dormir:</b> yogur griego o queso fresco (proteína lenta).</div></div>
-      </div>
-
-      <div class="card">
-        <div class="rpe-lab" style="margin-bottom:8px">Hidratación y recuperación</div>
-        <div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>2-3 L de agua</b> al día; más en días de calor o dobles (Madrid en verano aprieta).</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Sesiones largas y sudorosas: <b>electrolitos</b> (bebida deportiva o agua con sal + limón).</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Sueño 7-9 h:</b> tu mejor recuperación, y clave para reparar el aductor.</div></div>
-      </div>
-
       <div class="card">
         <div class="rpe-lab" style="margin-bottom:8px">Reglas para ti</div>
-        <div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>No recortes.</b> Delgado + entrenando fuerte + curando el aductor = necesitas energía, no déficit.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Proteína repartida en <b>4-5 tomas</b> para reparar músculo y tejido.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Carbo alrededor del entreno:</b> antes para rendir, después para reponer.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Dejaste de fumar → si vuelve el hambre, cómete algo bueno, no basura.</div></div><div style="display:flex;gap:9px;padding:6px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Menos <b>alcohol y ultraprocesados:</b> te hunden el sueño y la recuperación.</div></div>
+        <div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>No recortes:</b> delgado + entreno fuerte + curando aductor = energía, no déficit.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">Proteína repartida en <b>4-5 tomas</b>.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5"><b>Carbo alrededor del entreno:</b> antes para rendir, después para reponer.</div></div><div style="display:flex;gap:9px;padding:5px 0;align-items:flex-start"><span style="color:var(--volt);flex:none;line-height:1.5">•</span><div style="font-size:14px;line-height:1.5">2-3 L de agua (+ electrolitos con calor) y <b>sueño 7-9 h.</b></div></div>
       </div>
-
-      <p class="note">Pautas generales de nutrición deportiva (consenso tipo ISSN/ACSM), no un plan personalizado. No soy dietista. El chequeo de verdad: que tu peso se mantenga en ~72,5 kg. Si bajas, come más. Para afinar, un dietista deportivo.</p>
+      <p class="note">Valores por ración aproximados (composición estándar tipo BEDCA/USDA), orientativos, no exactos. Pauta general, no plan personalizado; no soy dietista. El chequeo de verdad es la báscula: si te mantienes en ~72,5 kg, vas bien.</p>
     </section>
   </main>
 
@@ -459,7 +456,7 @@ const store={
 async function load(k,d){ const r=await store.get(k); if(r==null)return d; try{return JSON.parse(r);}catch(e){return d;} }
 async function save(k,o){ await store.set(k,JSON.stringify(o)); }
 
-let state={checks:{},tests:[],daily:[]};
+let state={checks:{},tests:[],daily:[],nutri:{}};
 
 /* ============ FECHAS ============ */
 const START=new Date(2026,6,6);       // Lunes 6 jul 2026 = semana 1
@@ -1007,11 +1004,150 @@ function renderMas(){
   });
 }
 
+/* ============ NUTRICIÓN (tracker) ============ */
+const FOODS=[
+ {name:'Pechuga pollo (150g)',cat:'Proteína',kcal:250,p:46,c:0,f:5},
+ {name:'Ternera magra (150g)',cat:'Proteína',kcal:250,p:39,c:0,f:10},
+ {name:'Pescado blanco (150g)',cat:'Proteína',kcal:140,p:30,c:0,f:2},
+ {name:'Salmón (150g)',cat:'Proteína',kcal:280,p:34,c:0,f:16},
+ {name:'Atún lata (80g)',cat:'Proteína',kcal:92,p:21,c:0,f:1},
+ {name:'Huevo (1 ud)',cat:'Proteína',kcal:72,p:6,c:0,f:5},
+ {name:'Yogur griego (150g)',cat:'Proteína',kcal:145,p:14,c:6,f:7},
+ {name:'Queso batido (150g)',cat:'Proteína',kcal:110,p:18,c:6,f:2},
+ {name:'Batido proteína (1 scoop)',cat:'Proteína',kcal:120,p:24,c:3,f:2},
+ {name:'Lentejas cocidas (150g)',cat:'Proteína',kcal:170,p:12,c:26,f:1},
+ {name:'Arroz cocido (150g)',cat:'Carbos',kcal:195,p:4,c:43,f:1},
+ {name:'Arroz seco (100g)',cat:'Carbos',kcal:360,p:7,c:79,f:1},
+ {name:'Pasta cocida (150g)',cat:'Carbos',kcal:210,p:8,c:42,f:1},
+ {name:'Patata cocida (200g)',cat:'Carbos',kcal:160,p:4,c:36,f:0},
+ {name:'Tostada / pan (1 reb)',cat:'Carbos',kcal:100,p:3,c:20,f:1},
+ {name:'Avena (60g)',cat:'Carbos',kcal:230,p:8,c:40,f:4},
+ {name:'Plátano (1 ud)',cat:'Carbos',kcal:105,p:1,c:27,f:0},
+ {name:'Manzana (1 ud)',cat:'Carbos',kcal:95,p:0,c:25,f:0},
+ {name:'Dátiles (3 ud)',cat:'Carbos',kcal:60,p:0,c:16,f:0},
+ {name:'Miel (1 cda)',cat:'Carbos',kcal:60,p:0,c:16,f:0},
+ {name:'Aceite oliva (1 cda)',cat:'Grasas',kcal:90,p:0,c:0,f:10},
+ {name:'Aguacate (medio)',cat:'Grasas',kcal:110,p:1,c:6,f:10},
+ {name:'Frutos secos (30g)',cat:'Grasas',kcal:180,p:6,c:6,f:15},
+ {name:'Crema cacahuete (1 cda)',cat:'Grasas',kcal:95,p:4,c:3,f:8},
+ {name:'Leche entera (250ml)',cat:'Lácteos/bebida',kcal:155,p:8,c:12,f:8},
+ {name:'Leche semi (250ml)',cat:'Lácteos/bebida',kcal:115,p:8,c:12,f:4}
+];
+const NTARGET={entreno:{kcal:3000,p:130,c:420,f:90},descanso:{kcal:2400,p:130,c:300,f:75}};
+function nutriToday(){const k=ymd(today());if(!state.nutri[k])state.nutri[k]={dt:'entreno',items:[]};return state.nutri[k];}
+function nutriTotals(day){let t={kcal:0,p:0,c:0,f:0};day.items.forEach(i=>{t.kcal+=i.kcal;t.p+=i.p;t.c+=i.c;t.f+=i.f;});return t;}
+function nutriBar(lab,val,goal,unit){
+  const pct=Math.min(100,Math.round(val/goal*100));const over=val>goal;const left=Math.max(0,Math.round(goal-val));
+  const col=over?'var(--ember)':'var(--volt)';
+  return '<div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span style="color:var(--chalk);font-weight:600">'+lab+'</span><span style="font-family:var(--mono);color:var(--dim)"><b style="color:'+(over?'var(--ember)':'var(--chalk)')+'">'+Math.round(val)+'</b> / '+goal+unit+' · '+(over?'te pasas '+Math.round(val-goal):'faltan '+left)+unit+'</span></div><div style="height:9px;border-radius:6px;background:rgba(234,241,233,.1);overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:6px;transition:width .4s"></div></div></div>';
+}
+function nutriReco(tot,tg){
+  const rp=tg.p-tot.p,rc=tg.c-tot.c,rk=tg.kcal-tot.kcal;
+  if(rk<=0&&rp<=5){return '<div class="card" style="border-color:rgba(200,242,60,.35)"><div style="color:var(--volt);font-weight:600;font-size:14px">✓ Objetivos del día cubiertos. Buen trabajo.</div></div>';}
+  let lines=[];
+  if(rp>15)lines.push('Te faltan <b>'+Math.round(rp)+' g de proteína</b>: pechuga (46 g), batido (24 g), atún (21 g) o yogur griego (14 g).');
+  if(rc>60)lines.push('Te faltan <b>'+Math.round(rc)+' g de carbos</b>: arroz 150 g (43 g), pasta (42 g), avena (40 g) o plátano (27 g).');
+  if(rk>400&&rp<=15&&rc<=60)lines.push('Te faltan <b>~'+Math.round(rk)+' kcal</b>: suma una comida completa (proteína + carbo + grasa buena).');
+  if(!lines.length)return '';
+  return '<div class="card"><div class="rpe-lab" style="margin-bottom:8px">Para cubrir lo que falta</div>'+lines.map(l=>'<div style="font-size:14px;line-height:1.5;padding:4px 0">'+l+'</div>').join('')+'</div>';
+}
+function renderNutri(){
+  const day=nutriToday();const tg=NTARGET[day.dt];const tot=nutriTotals(day);
+  const dtEl=document.querySelector('#nutri-daytype');
+  if(dtEl)dtEl.querySelectorAll('.pill').forEach(p=>p.classList.toggle('act',p.dataset.dt===day.dt));
+  const prog=document.querySelector('#nutri-progress');
+  if(prog)prog.innerHTML='<div class="card">'+nutriBar('Calorías',tot.kcal,tg.kcal,' kcal')+nutriBar('Proteína',tot.p,tg.p,' g')+nutriBar('Carbohidratos',tot.c,tg.c,' g')+nutriBar('Grasa',tot.f,tg.f,' g')+'</div>';
+  const reco=document.querySelector('#nutri-reco');
+  if(reco)reco.innerHTML=nutriReco(tot,tg);
+  const log=document.querySelector('#nutri-log');
+  if(log){
+    if(!day.items.length){log.innerHTML='<div class="empty">Aún no has apuntado nada hoy. Añade lo que comas abajo.</div>';}
+    else{log.innerHTML=day.items.map((i,idx)=>'<div class="logentry"><div><div class="lv">'+i.name+'</div><div class="ld">'+Math.round(i.kcal)+' kcal · P '+Math.round(i.p)+' · C '+Math.round(i.c)+' · G '+Math.round(i.f)+'</div></div><button class="del" onclick="delNutri('+idx+')">×</button></div>').join('');}
+  }
+}
+function renderNutriAdd(){
+  const host=document.querySelector('#nutri-add');if(!host)return;
+  let html='';
+  html+='<input type="text" id="nutri-search" placeholder="Escribe un alimento y buscará solo…" autocomplete="off">';
+  html+='<div id="nutri-results"></div>';
+  html+='<div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:600;margin:14px 2px 4px">O toca un frecuente</div>';
+  const cats=['Proteína','Carbos','Grasas','Lácteos/bebida'];
+  cats.forEach(cat=>{
+    const items=FOODS.filter(x=>x.cat===cat);
+    html+='<div style="margin-bottom:8px"><div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin:8px 2px 6px">'+cat+'</div><div style="display:flex;flex-wrap:wrap;gap:6px">';
+    items.forEach(x=>{const idx=FOODS.indexOf(x);html+='<button onclick="addFood('+idx+')" style="border:1px solid var(--line-2);background:var(--pitch-2);color:var(--chalk);border-radius:999px;padding:8px 12px;font-size:12.5px;cursor:pointer;font-family:var(--body)">'+x.name+' <span style="color:var(--dim)">· '+x.kcal+'</span></button>';});
+    html+='</div></div>';
+  });
+  html+='<div class="card" style="margin-top:10px"><div class="rpe-lab" style="margin-bottom:8px">Otro alimento (manual)</div><div class="fieldset"><div class="fld" style="min-width:140px"><label>Nombre</label><input type="text" id="nf-name" placeholder="Ej: bocadillo"></div><div class="fld"><label>Kcal</label><input type="number" id="nf-kcal" placeholder="0"></div></div><div class="fieldset"><div class="fld"><label>Proteína g</label><input type="number" id="nf-p" placeholder="0"></div><div class="fld"><label>Carbos g</label><input type="number" id="nf-c" placeholder="0"></div><div class="fld"><label>Grasa g</label><input type="number" id="nf-f" placeholder="0"></div></div><button class="btn btn-primary" onclick="addCustom()">Añadir</button></div>';
+  host.innerHTML=html;
+  const si=document.querySelector('#nutri-search');
+  if(si){let t;si.oninput=()=>{clearTimeout(t);t=setTimeout(()=>nutriDoSearch(si.value),400);};}
+}
+function addFood(idx){const x=FOODS[idx];const day=nutriToday();day.items.push({name:x.name,kcal:x.kcal,p:x.p,c:x.c,f:x.f});save('nutri',state.nutri);renderNutri();}
+function addCustom(){const day=nutriToday();const name=(document.querySelector('#nf-name').value||'').trim()||'Alimento';const kcal=+document.querySelector('#nf-kcal').value||0,p=+document.querySelector('#nf-p').value||0,c=+document.querySelector('#nf-c').value||0,fat=+document.querySelector('#nf-f').value||0;if(!kcal&&!p&&!c&&!fat)return;day.items.push({name:name,kcal:kcal,p:p,c:c,f:fat});save('nutri',state.nutri);document.querySelector('#nf-name').value='';document.querySelector('#nf-kcal').value='';document.querySelector('#nf-p').value='';document.querySelector('#nf-c').value='';document.querySelector('#nf-f').value='';renderNutri();}
+function delNutri(idx){const day=nutriToday();day.items.splice(idx,1);save('nutri',state.nutri);renderNutri();}
+/* --- buscador automático (Open Food Facts) --- */
+let OFFRESULTS={};let searchSeq=0;
+async function offSearch(q){
+  const url='https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(q)+'&search_simple=1&action=process&json=1&page_size=20&fields=product_name,brands,nutriments';
+  try{
+    const r=await fetch(url);
+    if(!r.ok)return null;
+    const d=await r.json();
+    const out=[];
+    (d.products||[]).forEach(pr=>{
+      const n=pr.nutriments||{};
+      let kcal=n['energy-kcal_100g'];
+      if((kcal==null||kcal==='')&&n['energy_100g']!=null)kcal=n['energy_100g']/4.184;
+      const name=(pr.product_name||'').trim();
+      if(!name||kcal==null||kcal==='')return;
+      kcal=Math.round(+kcal);
+      if(!(kcal>0)||kcal>900)return;
+      out.push({name:name.slice(0,60),brand:(pr.brands||'').split(',')[0].trim(),kcal100:kcal,p100:Math.round((+n['proteins_100g']||0)*10)/10,c100:Math.round((+n['carbohydrates_100g']||0)*10)/10,f100:Math.round((+n['fat_100g']||0)*10)/10});
+    });
+    return out.slice(0,12);
+  }catch(e){return null;}
+}
+function resRowLocal(idx,x){return '<div class="nres-row" onclick="addFoodFromSearch('+idx+')"><div><div class="nn">'+x.name+'</div><div class="nb">Frecuente</div></div><div class="nk">'+x.kcal+' kcal</div></div>';}
+function resRowOff(i,o){return '<div class="nres-row" onclick="offSelect('+i+')"><div><div class="nn">'+o.name+'</div><div class="nb">'+(o.brand||'Open Food Facts')+'</div></div><div class="nk">'+o.kcal100+'/100g</div></div>';}
+async function nutriDoSearch(q){
+  const box=document.querySelector('#nutri-results');if(!box)return;
+  q=(q||'').trim();
+  if(q.length<2){box.innerHTML='';return;}
+  const mySeq=++searchSeq;
+  const ql=q.toLowerCase();
+  const local=FOODS.filter(x=>x.name.toLowerCase().includes(ql));
+  const localHtml=()=>{let s='';if(local.length){s+='<div class="nres-cat">Tus frecuentes</div>';local.forEach(x=>{s+=resRowLocal(FOODS.indexOf(x),x);});}return s;};
+  box.innerHTML=localHtml()+'<div class="nres-cat">Buscando en Open Food Facts…</div>';
+  const off=await offSearch(q);
+  if(mySeq!==searchSeq)return;
+  let h2=localHtml();
+  if(off===null){h2+='<div class="nres-note">No se pudo conectar al buscador (sin internet o bloqueado en esta vista). Usa tus frecuentes de arriba o el añadido manual.</div>';}
+  else if(off.length===0){h2+='<div class="nres-note">Sin resultados. Prueba otro nombre o usa el añadido manual.</div>';}
+  else{OFFRESULTS={};h2+='<div class="nres-cat">Open Food Facts · por 100 g (aprox.)</div>';off.forEach((o,i)=>{OFFRESULTS[i]=o;h2+=resRowOff(i,o);});}
+  box.innerHTML=h2;
+}
+function offSelect(i){
+  const o=OFFRESULTS[i];if(!o)return;
+  const box=document.querySelector('#nutri-results');if(!box)return;
+  box.innerHTML='<div class="card"><div class="rpe-lab" style="margin-bottom:6px">'+o.name+(o.brand?' · '+o.brand:'')+'</div><div style="font-size:12px;color:var(--dim);margin-bottom:10px">Por 100 g: '+o.kcal100+' kcal · P '+o.p100+' · C '+o.c100+' · G '+o.f100+'</div><div class="fieldset"><div class="fld"><label>Cantidad (g)</label><input type="number" id="off-grams" value="100"></div></div><button class="btn btn-primary" onclick="offAdd('+i+')">Añadir</button><button class="btn btn-ghost" style="margin-top:8px" onclick="nutriClearSearch()">Cancelar</button></div>';
+}
+function offAdd(i){
+  const o=OFFRESULTS[i];if(!o)return;
+  const g=+document.querySelector('#off-grams').value||100;const k=g/100;
+  const day=nutriToday();
+  day.items.push({name:o.name+' ('+g+'g)',kcal:Math.round(o.kcal100*k),p:Math.round(o.p100*k*10)/10,c:Math.round(o.c100*k*10)/10,f:Math.round(o.f100*k*10)/10});
+  save('nutri',state.nutri);nutriClearSearch();renderNutri();
+}
+function addFoodFromSearch(idx){addFood(idx);nutriClearSearch();}
+function nutriClearSearch(){const s=document.querySelector('#nutri-search');if(s)s.value='';const b=document.querySelector('#nutri-results');if(b)b.innerHTML='';}
+
 /* ============ SUBTABS & NAV ============ */
 function go(v){
   $$('.view').forEach(s=>s.classList.toggle('active',s.id===v));
   $$('.nav-i').forEach(b=>b.classList.toggle('act',b.dataset.v===v));
   if(v==='v-prog')renderProgress();
+  if(v==='v-nutri')renderNutri();
   window.scrollTo({top:0,behavior:'instant'});
 }
 $$('.nav-i').forEach(b=>b.onclick=()=>go(b.dataset.v));
@@ -1048,9 +1184,9 @@ function flash(btn,msg){const o=btn.textContent;btn.textContent=msg;btn.disabled
 /* reset */
 $('#reset-btn').onclick=async()=>{
   if(!confirm('¿Borrar todas tus sesiones, tests y registros? No se puede deshacer.'))return;
-  state={checks:{},tests:[],daily:[]};
-  await save('checks',{}); await save('tests',[]); await save('daily',[]);
-  renderToday(); renderProgress(); flash($('#reset-btn'),'Datos borrados');
+  state={checks:{},tests:[],daily:[],nutri:{}};
+  await save('checks',{}); await save('tests',[]); await save('daily',[]); await save('nutri',{});
+  renderToday(); renderProgress(); renderNutri(); flash($('#reset-btn'),'Datos borrados');
 };
 
 /* ============ INIT ============ */
@@ -1058,9 +1194,11 @@ async function init(){
   state.checks=await load('checks',{});
   state.tests=await load('tests',[]);
   state.daily=await load('daily',[]);
-  // seleccionar semana actual por defecto
+  state.nutri=await load('nutri',{});
   const loc=locateToday(); if(loc.state==='in')selWeek=loc.week;
   renderClock(); renderProgressBar(); renderToday(); renderPlan(); renderVideos(); renderMas(); renderProgress();
+  renderNutriAdd(); renderNutri();
+  $('#nutri-daytype').querySelectorAll('.pill').forEach(p=>p.onclick=()=>{const day=nutriToday();day.dt=p.dataset.dt;save('nutri',state.nutri);renderNutri();});
 }
 init();
 </script>

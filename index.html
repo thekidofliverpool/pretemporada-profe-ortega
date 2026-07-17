@@ -474,156 +474,115 @@ function cellDate(week,dayIdx){return addDays(START,(week-1)*7+dayIdx);}
 /* ============ PLAN (8 semanas) ============ */
 // type: train | match | test | rest ; b = bloques {h, items:[], v?:queryYT}
 const PHASES=[
- {key:'proteger',name:'Proteger',weeks:'1',hue:'#c8f23c'},
- {key:'cargar',name:'Cargar',weeks:'2–3',hue:'#c8f23c'},
- {key:'correr',name:'Correr',weeks:'4–5',hue:'#c8f23c'},
- {key:'volver',name:'Volver',weeks:'6–7',hue:'#c8f23c'}
+ {key:'correr',name:'Correr',weeks:'1–2',hue:'#c8f23c'},
+ {key:'rendir',name:'Rendir',weeks:'3–4',hue:'#c8f23c'},
+ {key:'afinar',name:'Afinar + Playa',weeks:'5–6',hue:'#c8f23c'}
 ];
-function phaseOf(w){return w<=1?0:(w<=3?1:(w<=5?2:3));}
+function phaseOf(w){return w<=2?0:(w<=4?1:2);}
 
 const W=[];
-// ===== SEMANA 1 · PROTEGER =====
+// ===== SEMANA 1 · CORRER · arranque de la escalera (protección y fuerza ya hechas) =====
 W[1]={days:[
- {type:'rest',title:'Día 1 · Proteger',b:[
-  {h:'Isquio (agudo)',items:['Hielo 15-20 min cada 2-3 h (con paño)','Compresión con venda + pierna en alto','NO estirar. NO masaje. NO pistola.','Camina lo justo y SIN cojear']},
-  {h:'Nada más',items:['Hoy no se entrena. Proteger es el trabajo.']}]},
- {type:'rest',title:'Día 2 · Proteger',b:[
-  {h:'Isquio',items:['Hielo, compresión, pierna en alto','Sigue sin estirar ni masajear']},
-  {h:'Tren superior (opcional)',items:['Solo si no implica la pierna: pecho, espalda, brazos']}]},
- {type:'train',title:'Día 3 · Primeros isométricos',b:[
-  {h:'Isquio · isométrico',items:['Boca arriba, rodilla 90°, talón en el suelo','Empuja el talón al 30-40% (dolor máx 2-3/10)','5x20-30 s · 2 veces al día'],v:'isometrico isquiotibial ejercicio rehabilitacion'},
-  {h:'Movilidad',items:['Camina normal, sin dolor','Nada de estiramientos']}]},
- {type:'train',title:'Isométricos + core',b:[
-  {h:'Isquio',items:['Isométricos 5x30 s, 2 veces al día','Sube el % solo si no duele'],v:'isometrico isquiotibial ejercicio rehabilitacion'},
-  {h:'Core',items:['Rutina Joserra (sin implicar isquio)']},
-  {h:'Tren superior',items:['Fuerza de brazos/espalda si quieres']}]},
- {type:'train',title:'Isométricos + bici suave',b:[
-  {h:'Isquio',items:['Isométricos 5x30 s · 2 veces al día'],v:'isometrico isquiotibial ejercicio rehabilitacion'},
-  {h:'Cardio sin impacto',items:['Bici estática suave 15-20 min SOLO si no duele']},
+ {type:'rest',title:'Proteger (hecho)',b:[{h:'Ya pasó',items:['Hielo, pierna en alto, isométricos. Bien hecho.']}]},
+ {type:'rest',title:'Isométricos (hecho)',b:[{h:'Ya pasó',items:['Isométricos suaves, sin dolor']}]},
+ {type:'rest',title:'Fuerza + isométricos 100% (hecho)',b:[{h:'Ya pasó',items:['Isométricos al 100% e inicio de fuerza','Pruebas superadas sin dolor']}]},
+ {type:'train',title:'Vuelta a la velocidad · 60%',b:[
+  {h:'Calentamiento',items:['15 min + progresivas']},
+  {h:'Carrera',items:['Trote suave 15 min']},
+  {h:'Aceleraciones',items:['6x40 m AL 60%','Recuperación completa','Sin dolor ni miedo'],v:'tecnica de carrera sprinter'},
+  {h:'Isquio',items:['Nórdicos 3x6'],v:'nordicos isquiotibiales tecnica'}]},
+ {type:'train',title:'Fuerza (sin alta velocidad)',b:[
+  {h:'Fuerza',items:['Peso muerto rumano 4x6','Sentadilla 3x8','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
   {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Isométricos + core',b:[
-  {h:'Isquio',items:['Isométricos, subiendo intensidad si va bien']},
-  {h:'Core + tren superior',items:['Rutina']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión de la semana',items:['¿Andas rápido sin dolor?','¿Los isométricos ya no molestan?','SÍ a las dos → pasas a Cargar','NO → repites esta semana. Sin prisa.']}]}
-]};
-// ===== SEMANAS 2-3 · CARGAR =====
-W[2]={days:[
- {type:'train',title:'Fuerza isquio (inicio)',b:[
-  {h:'Isquio',items:['Puente de glúteo 2 piernas 3x12','Isométricos 5x30 s al 70%'],v:'puente de gluteo tecnica'},
-  {h:'Regla de oro',items:['Dolor máx 3/10. Al día siguiente igual o mejor. Si empeora, retrocedes.']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio sin impacto + core',b:[
-  {h:'Cardio',items:['Bici estática 25-30 min ritmo medio (sin dolor)']},
-  {h:'Core + tren superior',items:['Rutina completa']}]},
- {type:'train',title:'Fuerza isquio + rodilla',b:[
-  {h:'Isquio',items:['Puente de glúteo 3x12','Peso muerto rumano MUY ligero, rango corto 3x10'],v:'peso muerto rumano tecnica'},
-  {h:'Rodilla (rutina fisio)',items:['Polea pierna recta: fuera 3x12, dentro 3x12','TKE con goma 3x15']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio + core',b:[
-  {h:'Cardio',items:['Bici 30 min o elíptica si no molesta']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Fuerza isquio',b:[
-  {h:'Isquio',items:['Puente a UNA pierna 3x8/lado','Peso muerto rumano ligero 3x10'],v:'puente de gluteo una pierna'},
-  {h:'Aductor (mantener)',items:['Copenhague corto 3x8/lado'],v:'copenhagen adductor exercise tecnica'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio + movilidad',b:[
-  {h:'Cardio',items:['Bici 30 min suave']},
-  {h:'Movilidad',items:['Cadera y tobillo. NO estirar isquio aún']}]},
- {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
-]};
-W[3]={days:[
- {type:'train',title:'Fuerza isquio (subir)',b:[
-  {h:'Isquio',items:['Peso muerto rumano 3x8 (subiendo peso)','Curl nórdico asistido, bajando poco 3x5','Puente a una pierna 3x10/lado'],v:'nordicos isquiotibiales tecnica'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio + fuerza general',b:[
-  {h:'Cardio',items:['Bici 30 min o trote MUY suave si no duele nada']},
-  {h:'Fuerza',items:['Sentadilla ligera 3x10','Hip thrust 3x12'],v:'sentadilla tecnica correcta'}]},
- {type:'train',title:'Fuerza isquio + rodilla',b:[
-  {h:'Isquio',items:['Nórdicos asistidos 3x6','Peso muerto rumano 3x8'],v:'nordicos isquiotibiales tecnica'},
-  {h:'Rodilla (fisio)',items:['Polea + TKE con goma']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio + core',b:[
-  {h:'Cardio',items:['Bici 30-35 min ritmo medio']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Fuerza + aductor',b:[
-  {h:'Isquio',items:['Peso muerto a una pierna 3x8/lado (corrige asimetría)'],v:'peso muerto una pierna tecnica'},
-  {h:'Aductor',items:['Copenhague 3x8/lado']},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Cardio suave',b:[{h:'Cardio',items:['Bici o caminata rápida 30 min']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Andas rápido y subes escaleras sin dolor?','¿Fuerza sin molestia?','SÍ → pasas a Correr','NO → repites. El sprint es lo último.']}]}
-]};
-// ===== SEMANAS 4-5 · CORRER =====
-W[4]={days:[
- {type:'train',title:'Vuelta al trote',b:[
-  {h:'Calentamiento',items:['10 min movilidad + caminar rápido']},
-  {h:'Carrera',items:['Trote MUY suave 15-20 min','Si duele algo, paras. Sin excepción.']},
-  {h:'Isquio',items:['Nórdicos 3x6','Peso muerto rumano 3x8']}]},
- {type:'train',title:'Fuerza + core',b:[
-  {h:'Fuerza',items:['Sentadilla 4x8','Hip thrust 4x10','Peso muerto a una pierna 3x8/lado'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Carrera continua',b:[
-  {h:'Carrera',items:['Trote continuo 25 min ritmo suave-medio']},
-  {h:'Isquio',items:['Nórdicos 3x6']}]},
- {type:'train',title:'Aceleraciones al 50-60%',b:[
-  {h:'Calentamiento',items:['15 min completo, progresivo']},
-  {h:'Aceleraciones',items:['6x40 m AL 50-60%','Recuperación completa','Si molesta, paras. NO fuerces.'],v:'tecnica de carrera sprinter'},
-  {h:'Isquio',items:['Nórdicos 3x6']}]},
- {type:'train',title:'Fuerza + carrera',b:[
-  {h:'Fuerza',items:['Peso muerto rumano 4x6','Nórdicos 3x8']},
-  {h:'Carrera',items:['20 min ritmo medio']}]},
- {type:'train',title:'Aceleraciones al 70%',b:[
-  {h:'Carrera',items:['25 min ritmo medio']},
-  {h:'Aceleraciones',items:['6x40 m AL 70%','Recuperación completa']}]},
- {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
-]};
-W[5]={days:[
- {type:'train',title:'Aceleraciones al 80%',b:[
-  {h:'Calentamiento',items:['18 min progresivo']},
-  {h:'Velocidad',items:['6x40 m AL 80%','Recuperación completa'],v:'tecnica de sprint velocidad'},
+ {type:'train',title:'Carrera + aceleraciones 70-80%',b:[
+  {h:'Carrera',items:['20-25 min ritmo medio']},
+  {h:'Aceleraciones',items:['6x40 m AL 70-80%','Recuperación completa'],v:'tecnica de sprint velocidad'},
   {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza',b:[
-  {h:'Fuerza',items:['Sentadilla 4x6','Peso muerto rumano 4x6','Nórdicos 3x8'],v:'nordicos isquiotibiales tecnica'},
+ {type:'rest',title:'Descanso · checkpoint',b:[
+  {h:'Revisión',items:['¿Aceleraste al 80% sin dolor ni miedo?','¿Amaneces igual o mejor?','SÍ → subes a 90 y al test de 100%','NO → repites, sin forzar']}]}
+]};
+// ===== SEMANA 2 · CORRER · cima de la escalera =====
+W[2]={days:[
+ {type:'train',title:'Aceleraciones al 90%',b:[
+  {h:'Calentamiento',items:['18 min']},
+  {h:'Velocidad',items:['6x40 m AL 90%','Recuperación completa','Casi estás'],v:'tecnica de sprint velocidad'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza-potencia',b:[
+  {h:'Fuerza',items:['Sentadilla 5x4','Peso muerto rumano 4x5','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
   {h:'Core',items:['Rutina']}]},
  {type:'train',title:'Base aeróbica (Joserra)',b:[
   {h:'Carrera',items:['15 min medio + 3 min recup + 15 min medio + 5 min trote']},
   {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Aceleraciones al 90%',b:[
-  {h:'Calentamiento',items:['18 min']},
-  {h:'Velocidad',items:['6x40 m AL 90%','Recuperación completa','Casi estás. Sin dolor = seguimos.']},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza + agilidad suave',b:[
-  {h:'Fuerza',items:['Peso muerto a una pierna 3x8/lado','Hip thrust 4x8']},
-  {h:'Agilidad',items:['Cambios de dirección suaves, sin explosividad']}]},
  {type:'test',title:'TEST · sprint al 100%',b:[
   {h:'Calentamiento',items:['20 min muy completo']},
-  {h:'Test clave',items:['4x30 m AL 100%','Sin dolor NI miedo → luz verde para jugar','Con dolor → retrocedes una semana']},
+  {h:'Test clave',items:['4x30 m AL 100%','Sin dolor NI miedo → luz verde total','Con dolor → retrocedes una semana']},
   {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Sprint al 100% sin dolor ni miedo?','SÍ → puedes volver a competir','NO → repites la semana. No se negocia.']}]}
-]};
-// ===== SEMANAS 6-7 · VOLVER =====
-W[6]={days:[
- {type:'train',title:'Velocidad + RSA',b:[
-  {h:'Calentamiento',items:['18 min']},
-  {h:'RSA',items:['6x30 m con 30 s recup · 2 series'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Isquio',items:['Nórdicos 3x8 (para siempre)']}]},
- {type:'train',title:'Fuerza-potencia',b:[
-  {h:'Fuerza',items:['Sentadilla 5x4','Peso muerto rumano 4x5','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'match',title:'Vuelta al partido (controlado)',b:[
-  {h:'Partido',items:['Primer partido. Calienta MUY bien.','Empieza al 80%, no te vacíes','Si notas el isquio, sales. Sin heroicidades.']}]},
- {type:'train',title:'Cuestas (Joserra)',b:[
-  {h:'Cuestas',items:['60 m: 2-3 series x 5 repes','Trote suave 10 min al acabar'],v:'sprints en cuesta entrenamiento'},
-  {h:'Core',items:['Rutina']}]},
  {type:'train',title:'Fuerza + pliometría suave',b:[
   {h:'Fuerza',items:['Sentadilla 4x5','Nórdicos 3x8']},
-  {h:'Pliometría',items:['CMJ 4x4 (introducción suave)'],v:'salto vertical cmj tecnica'}]},
+  {h:'Pliometría',items:['CMJ 4x4 (introducción)'],v:'salto vertical cmj tecnica'}]},
+ {type:'train',title:'RSA (empieza rendimiento)',b:[
+  {h:'RSA',items:['6x30 m con 30 s recup · 2 series'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'rest',title:'Descanso · checkpoint',b:[
+  {h:'Revisión',items:['¿Sprint al 100% superado sin dolor ni miedo?','SÍ → entras a Rendir a tope','NO → repites la semana']}]}
+]};
+// ===== SEMANAS 3-4 · RENDIR · construir el avión =====
+W[3]={days:[
+ {type:'train',title:'Velocidad punta + pliometría',b:[
+  {h:'Calentamiento',items:['18 min']},
+  {h:'Velocidad',items:['Flying sprints 6x40 m al 100%','Recuperación completa'],v:'tecnica de sprint velocidad'},
+  {h:'Pliometría',items:['Drop jumps 4x4'],v:'drop jump pliometria tecnica'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza-potencia',b:[
+  {h:'Fuerza',items:['Sentadilla 5x3','Jump squat cargado 5x3','Peso muerto rumano 4x5','Nórdicos 3x8'],v:'jump squat tecnica correcta'},
+  {h:'Core',items:['Rutina']}]},
+ {type:'match',title:'Pachanga (controlado)',b:[{h:'Partido',items:['Vuelves a competir. Calienta bien. Empieza al 85%.','Si notas el isquio, sales']}]},
+ {type:'train',title:'RSA + cuestas (Joserra)',b:[
+  {h:'RSA / cuestas',items:['RSA 8x30 m con 25 s · 2 series','o cuestas 60 m 3x5'],v:'sprints en cuesta entrenamiento'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Contraste + específico extremo',b:[
+  {h:'Complejo',items:['Sentadilla pesada + jump squats x3']},
+  {h:'Específico',items:['1v1 y desbordes a velocidad'],v:'regate uno contra uno extremo futbol'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
  {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición. Sube al 90%.']}]},
  {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
 ]};
-W[7]={days:[
+W[4]={days:[
+ {type:'train',title:'Velocidad + reactividad',b:[
+  {h:'Velocidad',items:['Flying 6x40 m','Sprints en curva 4x30 m'],v:'tecnica de sprint velocidad'},
+  {h:'Pliometría',items:['Reactiva: drop jump + rebote, saltos laterales']},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza-potencia (pico)',b:[
+  {h:'Fuerza',items:['Sentadilla 4x3 pesada-rápida','Jump squat cargado 4x3','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
+  {h:'Core',items:['Rutina']}]},
+ {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición a tope']}]},
+ {type:'train',title:'RSA pura (Joserra S13)',b:[
+  {h:'RSA',items:['10 min vivo + 12x (6 s sprint + 20 s trote) + 10 min suave'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Específico + agilidad',b:[
+  {h:'Específico',items:['1v1, centros y finalización a velocidad'],v:'tecnica de centro futbol banda'},
+  {h:'Agilidad',items:['Agilidad reactiva','Copenhague 3x8/lado']}]},
+ {type:'match',title:'Partido fuerte',b:[{h:'Partido',items:['Máxima intensidad']}]},
+ {type:'rest',title:'Descanso · checkpoint',b:[{h:'Revisión',items:['Isquio aguantando todo → listo para afinar','Molestia → bajas carga esa semana']}]}
+]};
+// ===== SEMANAS 5-6 · AFINAR + PLAYA =====
+W[5]={days:[
+ {type:'train',title:'Velocidad de calidad + RSA',b:[
+  {h:'Velocidad',items:['Pocos sprints máximos de calidad, recuperación total']},
+  {h:'RSA',items:['RSA corta 6x30 m'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza mantenimiento',b:[
+  {h:'Fuerza',items:['Sentadilla 3x3','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
+  {h:'Core',items:['Rutina']}]},
+ {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición']}]},
+ {type:'train',title:'Base + pliometría corta',b:[
+  {h:'Carrera',items:['30 min ritmo medio']},
+  {h:'Pliometría',items:['Pocos saltos reactivos']}]},
+ {type:'train',title:'Afinado',b:[{h:'Trabajo',items:['Aceleraciones cortas 4x20 m','Técnica de balón','Core']}]},
+ {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición']}]},
+ {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
+]};
+W[6]={days:[
  {type:'train',title:'Mañana playa · velocidad',b:[
   {h:'Calentamiento',items:['15 min completo']},
   {h:'Velocidad',items:['4-5 sprints máximos, recuperación total'],v:'tecnica de sprint velocidad'},
@@ -640,7 +599,7 @@ W[7]={days:[
  {type:'train',title:'Activación',b:[
   {h:'Trabajo',items:['Calentamiento + 3-4 sprints al 100%','Balón. Llegar fresco.']}]},
  {type:'rest',title:'Descanso total · 23 ago',b:[
-  {h:'Recuperación',items:['Descanso pleno. Mañana empiezas con el equipo.','Has vuelto de una lesión. Llegas entero y más fuerte.']}]}
+  {h:'Recuperación',items:['Descanso pleno. Mañana empiezas con el equipo.','Vuelves de una lesión hecho un avión, y más fuerte que antes.']}]}
 ]};
 
 /* ============ VÍDEOS ============ */
@@ -701,10 +660,9 @@ const VIDEOS=[
 
 /* ============ MENTAL / NUTRICIÓN ============ */
 const MANTRAS={
- 0:'Hoy proteger es entrenar. El que respeta la lesión, vuelve. El que la fuerza, recae.',
- 1:'El músculo se cura cargándolo. Cada serie me reconstruye más fuerte que antes.',
- 2:'Vuelvo a correr con cabeza. Cada porcentaje ganado es un paso, no una prueba.',
- 3:'He vuelto de una lesión. Llego entero, fuerte y sin miedo. El 24 es mío.'
+ 0:'Subo la escalera con cabeza. Cada porcentaje ganado, no probado. Sin prisa y sin pausa.',
+ 1:'Ya corro sin miedo. Ahora construyo: potencia, sprint y fondo. Me hago incansable.',
+ 2:'Afilo y llego fresco. El 24 vuelvo hecho un avión, y más fuerte que antes de la lesión.'
 };
 const GUIDES=[
  {ic:'🚑',t:'Protocolo isquio · léelo',body:`
@@ -713,11 +671,12 @@ const GUIDES=[
    <li><b>NO estires</b> el isquio hasta que esté curado. Estirar una rotura la agrava.</li>
    <li><b>NO pruebes a esprintar</b> "a ver cómo va". Esa prueba es la que provoca la recaída.</li>
    <li><b>Nórdicos siempre</b>, incluso cuando estés bien. Es lo que más reduce el riesgo de recaída.</li></ul>
-   <h5>Las fases</h5>
-   <ul><li><b>Proteger (sem 1):</b> hielo, compresión, pierna en alto. Isométricos desde el día 3.</li>
-   <li><b>Cargar (sem 2-3):</b> fuerza progresiva. El músculo se cura cargándolo.</li>
-   <li><b>Correr (sem 4-5):</b> trote → aceleraciones 50% → 70% → 80% → 90% → 100%. Sin saltar pasos.</li>
-   <li><b>Volver (sem 6-7):</b> competir de nuevo, subiendo intensidad.</li></ul>
+   <h5>Las fases (vía express)</h5>
+   <ul><li><b>Proteger + Cargar:</b> hecho. Isométricos y fuerza superados sin dolor.</li>
+   <li><b>Correr (sem 1-2):</b> la escalera de sprint: 60% → 70-80% → 90% → test de 100%. Sin saltar pasos.</li>
+   <li><b>Rendir (sem 3-4):</b> potencia, RSA, pliometría y vuelta a competir.</li>
+   <li><b>Afinar + Playa (sem 5-6):</b> afilar y llegar fresco al 24.</li></ul>
+   <p><b>Aunque te sientas bien, el 100% de velocidad es lo último de la escalera.</b> Ahí no hay atajo.</p>
    <h5>Al médico (gratis, Seguridad Social) si:</h5>
    <ul><li>Hematoma grande, no puedes contraer el músculo, no mejora en 7-10 días o va a peor.</li></ul>
    <p><b>Los checkpoints mandan, no el calendario.</b> Si no pasas la revisión del domingo, repites la semana. Llegar tarde es mejor que recaer.</p>`},

@@ -276,7 +276,7 @@
           <div class="mid"></div><div class="circle"></div>
           <div class="ball" id="pf-ball" style="left:0%"></div>
         </div>
-        <div class="legend"><span>Inicio · 13 jul</span><span>Pretempo · 24 ago</span></div>
+        <div class="legend"><span>Inicio · 27 jul</span><span>Pretempo · 24 ago</span></div>
       </div>
       <div id="today-card"></div>
     </section>
@@ -451,7 +451,7 @@ async function save(k,o){ await store.set(k,JSON.stringify(o)); }
 let state={checks:{},tests:[],daily:[],nutri:{}};
 
 /* ============ FECHAS ============ */
-const START=new Date(2026,6,13);      // Lunes 13 jul 2026 = semana 1 (vuelta tras lesión)
+const START=new Date(2026,6,27);      // Lunes 27 jul 2026 = semana 1 (rehab aductor)
 const DEBUT=new Date(2026,7,24);      // Lunes 24 ago 2026 = inicio pretemporada con el equipo
 const DAYNAMES=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 const MONTHS=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -466,132 +466,101 @@ function cellDate(week,dayIdx){return addDays(START,(week-1)*7+dayIdx);}
 /* ============ PLAN (8 semanas) ============ */
 // type: train | match | test | rest ; b = bloques {h, items:[], v?:queryYT}
 const PHASES=[
- {key:'correr',name:'Correr',weeks:'1–2',hue:'#ffb020'},
- {key:'rendir',name:'Rendir',weeks:'3–4',hue:'#ffb020'},
- {key:'afinar',name:'Afinar + Playa',weeks:'5–6',hue:'#ffb020'}
+ {key:'reparar',name:'Reparar',weeks:'1',hue:'#c8f23c'},
+ {key:'cargar',name:'Cargar',weeks:'2',hue:'#c8f23c'},
+ {key:'volver',name:'Volver + Playa',weeks:'3–4',hue:'#c8f23c'}
 ];
-function phaseOf(w){return w<=2?0:(w<=4?1:2);}
+function phaseOf(w){return w<=1?0:(w<=2?1:2);}
 
 const W=[];
-// ===== SEMANA 1 · CORRER · arranque de la escalera (protección y fuerza ya hechas) =====
+// ===== SEMANA 1 · REPARAR ADUCTOR · carga inicial, sin fútbol ni cambios de dirección =====
 W[1]={days:[
- {type:'rest',title:'Proteger (hecho)',b:[{h:'Ya pasó',items:['Hielo, pierna en alto, isométricos. Bien hecho.']}]},
- {type:'rest',title:'Isométricos (hecho)',b:[{h:'Ya pasó',items:['Isométricos suaves, sin dolor']}]},
- {type:'rest',title:'Fuerza + isométricos 100% (hecho)',b:[{h:'Ya pasó',items:['Isométricos al 100% e inicio de fuerza','Pruebas superadas sin dolor']}]},
- {type:'train',title:'Vuelta a la velocidad · 60%',b:[
-  {h:'Calentamiento',items:['15 min + progresivas']},
-  {h:'Carrera',items:['Trote suave 15 min']},
-  {h:'Aceleraciones',items:['6x40 m AL 60%','Recuperación completa','Sin dolor ni miedo'],v:'tecnica de carrera sprinter'},
-  {h:'Isquio',items:['Nórdicos 3x6'],v:'nordicos isquiotibiales tecnica'}]},
- {type:'train',title:'Fuerza (sin alta velocidad)',b:[
-  {h:'Fuerza',items:['Peso muerto rumano 4x6','Sentadilla 3x8','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Carrera + aceleraciones 70-80%',b:[
-  {h:'Carrera',items:['20-25 min ritmo medio']},
-  {h:'Aceleraciones',items:['6x40 m AL 70-80%','Recuperación completa'],v:'tecnica de sprint velocidad'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Aductor · isométricos + carga inicial',b:[
+  {h:'Aductor (medicina)',items:['Isométricos: pelota entre rodillas, 5x30-45 s al 60-70% (dolor ≤3/10)','Aducción tumbado de lado, pierna estirada 3x12/lado','Copenhague palanca corta (rodilla apoyada) 3x6/lado'],v:'copenhagen adductor exercise tecnica'},
+  {h:'Prehab isquio',items:['Nórdicos 3x8'],v:'nordicos isquiotibiales tecnica'},
+  {h:'Core',items:['Circuito base 2 vueltas']}]},
+ {type:'train',title:'Base aeróbica (recta) + tren superior',b:[
+  {h:'Carrera',items:['25-30 min ritmo medio EN LÍNEA RECTA (sin cambios de dirección)','Solo si no duele la ingle']},
+  {h:'Fuerza',items:['Tren superior + core']},
+  {h:'Prohibido',items:['NADA de chutar ni cambios de dirección']}]},
+ {type:'train',title:'Aductor + fuerza de piernas',b:[
+  {h:'Aductor',items:['Isométricos 5x30 s','Copenhague palanca corta 3x8/lado','Aducción lateral 3x12/lado'],v:'copenhagen adductor exercise tecnica'},
+  {h:'Fuerza (sin dolor de ingle)',items:['Sentadilla 3x8','Peso muerto rumano 3x8','Nórdicos 3x8']},
+  {h:'Core',items:['Circuito base']}]},
+ {type:'train',title:'Base + movilidad',b:[
+  {h:'Cardio',items:['Carrera recta 25 min medio o bici']},
+  {h:'Movilidad',items:['Cadera (SIN estirar el aductor a fondo)','Core']}]},
+ {type:'train',title:'Aductor (subir carga)',b:[
+  {h:'Aductor',items:['Isométricos al 70%','Copenhague progresando 3x8/lado','Máquina de aductor (si tienes) 3x8 lento'],v:'copenhagen adductor exercise tecnica'},
+  {h:'Prehab + core',items:['Nórdicos 3x8','Circuito base']}]},
+ {type:'train',title:'Base + core',b:[{h:'Carrera',items:['Recta 30 min ritmo medio']},{h:'Core',items:['Circuito base + anti-rotación']},{h:'Nota',items:['NADA de partido esta semana']}]},
  {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Aceleraste al 80% sin dolor ni miedo?','¿Amaneces igual o mejor?','SÍ → subes a 90 y al test de 100%','NO → repites, sin forzar']}]}
+  {h:'Revisión',items:['¿Isométricos y Copenhague sin dolor (≤3/10)?','¿La ingle va mejor que la semana pasada?','SÍ → pasas a Cargar','NO → repites, y NADA de pachangas']}]}
 ]};
-// ===== SEMANA 2 · CORRER · cima de la escalera =====
+// ===== SEMANA 2 · CARGAR + REINTRODUCIR =====
 W[2]={days:[
- {type:'train',title:'Aceleraciones al 90%',b:[
-  {h:'Calentamiento',items:['18 min']},
-  {h:'Velocidad',items:['6x40 m AL 90%','Recuperación completa','Casi estás'],v:'tecnica de sprint velocidad'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
+ {type:'train',title:'Aductor completo + fuerza',b:[
+  {h:'Aductor',items:['Copenhague COMPLETO (palanca larga) 3x6-8/lado','Aducción deslizante o con banda 3x12'],v:'copenhagen adductor exercise tecnica'},
+  {h:'Fuerza',items:['Sentadilla 4x6','Peso muerto rumano 4x6','Nórdicos 3x8']},
+  {h:'Core',items:['Circuito + anti-rotación']}]},
+ {type:'train',title:'Reintroducir movimiento + base',b:[
+  {h:'Activación',items:['Isométricos de aductor']},
+  {h:'Movimiento',items:['Cambios de dirección SUAVES a medio ritmo','Chut: empieza con pases cortos suaves, SIN dolor']},
+  {h:'Carrera',items:['Recta 20 min medio']}]},
+ {type:'train',title:'Aductor + RSA en recta',b:[
+  {h:'Aductor',items:['Copenhague completo 3x8/lado']},
+  {h:'RSA (recta)',items:['6x30 m con 30 s recup (sin frenazos bruscos)'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Prehab',items:['Nórdicos 3x8','Core']}]},
  {type:'train',title:'Fuerza-potencia',b:[
-  {h:'Fuerza',items:['Sentadilla 5x4','Peso muerto rumano 4x5','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Base aeróbica (Joserra)',b:[
-  {h:'Carrera',items:['15 min medio + 3 min recup + 15 min medio + 5 min trote']},
-  {h:'Core',items:['Rutina']}]},
- {type:'test',title:'TEST · sprint al 100%',b:[
-  {h:'Calentamiento',items:['20 min muy completo']},
-  {h:'Test clave',items:['4x30 m AL 100%','Sin dolor NI miedo → luz verde total','Con dolor → retrocedes una semana']},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza + pliometría suave',b:[
-  {h:'Fuerza',items:['Sentadilla 4x5','Nórdicos 3x8']},
-  {h:'Pliometría',items:['CMJ 4x4 (introducción)'],v:'salto vertical cmj tecnica'}]},
- {type:'train',title:'RSA (empieza rendimiento)',b:[
-  {h:'RSA',items:['6x30 m con 30 s recup · 2 series'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Sprint al 100% superado sin dolor ni miedo?','SÍ → entras a Rendir a tope','NO → repites la semana']}]}
-]};
-// ===== SEMANAS 3-4 · RENDIR · construir el avión =====
-W[3]={days:[
- {type:'train',title:'Velocidad punta + pliometría',b:[
-  {h:'Calentamiento',items:['18 min']},
-  {h:'Velocidad',items:['Flying sprints 6x40 m al 100%','Recuperación completa'],v:'tecnica de sprint velocidad'},
-  {h:'Pliometría',items:['Drop jumps 4x4'],v:'drop jump pliometria tecnica'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza-potencia',b:[
-  {h:'Fuerza',items:['Sentadilla 5x3','Jump squat cargado 5x3','Peso muerto rumano 4x5','Nórdicos 3x8'],v:'jump squat tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'match',title:'Pachanga (controlado)',b:[{h:'Partido',items:['Vuelves a competir. Calienta bien. Empieza al 85%.','Si notas el isquio, sales']}]},
- {type:'train',title:'RSA + cuestas (Joserra)',b:[
-  {h:'RSA / cuestas',items:['RSA 8x30 m con 25 s · 2 series','o cuestas 60 m 3x5'],v:'sprints en cuesta entrenamiento'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Contraste + específico extremo',b:[
-  {h:'Complejo',items:['Sentadilla pesada + jump squats x3']},
-  {h:'Específico',items:['1v1 y desbordes a velocidad'],v:'regate uno contra uno extremo futbol'},
+  {h:'Fuerza',items:['Sentadilla 4x5','Peso muerto rumano 4x6','Hip thrust 4x8'],v:'sentadilla tecnica correcta'},
   {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
- {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición. Sube al 90%.']}]},
- {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
+ {type:'train',title:'Reintroducir + agilidad',b:[
+  {h:'Movimiento',items:['Cambios de dirección a más intensidad (si sin dolor)','Chut progresando en potencia, sin dolor']},
+  {h:'Velocidad',items:['Aceleraciones 6x30 m']}]},
+ {type:'train',title:'Base + toque de balón',b:[{h:'Carrera',items:['Recta 25-30 min']},{h:'Balón',items:['Toque suave, controlado']},{h:'Core',items:['Circuito']}]},
+ {type:'rest',title:'Descanso · checkpoint',b:[
+  {h:'Revisión',items:['¿Cambios de dirección y chut a intensidad media SIN dolor que empeore?','SÍ → pasas a Volver (fútbol controlado)','NO → repites. Copenhague sigue SIEMPRE']}]}
+]};
+// ===== SEMANAS 3-4 · VOLVER + PLAYA =====
+W[3]={days:[
+ {type:'train',title:'Velocidad + RSA',b:[
+  {h:'Calentamiento',items:['RAMP completo + progresivas']},
+  {h:'RSA',items:['6x30 m con cambios de dirección (progresivo)'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza-potencia',b:[
+  {h:'Fuerza',items:['Sentadilla 5x4','Peso muerto rumano 4x5','Jump squat cargado 4x3'],v:'jump squat tecnica correcta'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'match',title:'Vuelta al fútbol (controlado)',b:[
+  {h:'Partido',items:['Fútbol reducido o partido controlado. Isométricos antes.','Empieza al 80%','Si la ingle da dolor que EMPEORA, sales']}]},
+ {type:'train',title:'Cuestas + específico',b:[
+  {h:'Trabajo',items:['Cuestas o específico de extremo (1v1, centros) a intensidad creciente'],v:'sprints en cuesta entrenamiento'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'train',title:'Fuerza + pliometría',b:[
+  {h:'Fuerza',items:['Sentadilla 4x5','CMJ 4x4'],v:'salto vertical cmj tecnica'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'match',title:'Partido (90%)',b:[{h:'Partido',items:['Competición, sube al 90%','Vigila la ingle: dolor que se pasa = OK; que empeora = fuera']}]},
+ {type:'rest',title:'Descanso · checkpoint',b:[
+  {h:'Revisión',items:['¿Aguantas el fútbol con la ingle tolerando (dolor ≤3/10 que se pasa)?','SÍ → listo para la pretemporada','Copenhague de por vida, aunque estés bien']}]}
 ]};
 W[4]={days:[
- {type:'train',title:'Velocidad + reactividad',b:[
-  {h:'Velocidad',items:['Flying 6x40 m','Sprints en curva 4x30 m'],v:'tecnica de sprint velocidad'},
-  {h:'Pliometría',items:['Reactiva: drop jump + rebote, saltos laterales']},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza-potencia (pico)',b:[
-  {h:'Fuerza',items:['Sentadilla 4x3 pesada-rápida','Jump squat cargado 4x3','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición a tope']}]},
- {type:'train',title:'RSA pura (Joserra S13)',b:[
-  {h:'RSA',items:['10 min vivo + 12x (6 s sprint + 20 s trote) + 10 min suave'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Específico + agilidad',b:[
-  {h:'Específico',items:['1v1, centros y finalización a velocidad'],v:'tecnica de centro futbol banda'},
-  {h:'Agilidad',items:['Agilidad reactiva','Copenhague 3x8/lado']}]},
- {type:'match',title:'Partido fuerte',b:[{h:'Partido',items:['Máxima intensidad']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[{h:'Revisión',items:['Isquio aguantando todo → listo para afinar','Molestia → bajas carga esa semana']}]}
-]};
-// ===== SEMANAS 5-6 · AFINAR + PLAYA =====
-W[5]={days:[
- {type:'train',title:'Velocidad de calidad + RSA',b:[
-  {h:'Velocidad',items:['Pocos sprints máximos de calidad, recuperación total']},
-  {h:'RSA',items:['RSA corta 6x30 m'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza mantenimiento',b:[
-  {h:'Fuerza',items:['Sentadilla 3x3','Nórdicos 3x8'],v:'sentadilla tecnica correcta'},
-  {h:'Core',items:['Rutina']}]},
- {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición']}]},
- {type:'train',title:'Base + pliometría corta',b:[
-  {h:'Carrera',items:['30 min ritmo medio']},
-  {h:'Pliometría',items:['Pocos saltos reactivos']}]},
- {type:'train',title:'Afinado',b:[{h:'Trabajo',items:['Aceleraciones cortas 4x20 m','Técnica de balón','Core']}]},
- {type:'match',title:'Partido',b:[{h:'Partido',items:['Competición']}]},
- {type:'rest',title:'Descanso',b:[{h:'Recuperación',items:['Descanso pasivo']}]}
-]};
-W[6]={days:[
  {type:'train',title:'Mañana playa · velocidad',b:[
   {h:'Calentamiento',items:['15 min completo']},
   {h:'Velocidad',items:['4-5 sprints máximos, recuperación total'],v:'tecnica de sprint velocidad'},
-  {h:'Isquio',items:['Nórdicos 3x8']}]},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
  {type:'train',title:'Mañana playa · fartlek',b:[
   {h:'Carrera',items:['20 min variando ritmo en el paseo marítimo'],v:'fartlek entrenamiento carrera'},
-  {h:'Core',items:['Rutina']}]},
+  {h:'Core',items:['Circuito']}]},
  {type:'rest',title:'Descanso / baño de mar',b:[{h:'Recuperación',items:['Nadar suave. Disfruta y recupera.']}]},
  {type:'train',title:'Mañana playa · RSA',b:[
   {h:'RSA',items:['8x (6 s sprint + 20 s trote) en arena dura'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Core',items:['Rutina']}]},
- {type:'train',title:'Mañana playa · fuerza',b:[
-  {h:'Fuerza (sin material)',items:['Sentadilla, zancadas, puente a una pierna','Nórdicos si puedes anclar los pies','Core']}]},
+  {h:'Prehab',items:['Copenhague 3x8/lado']}]},
+ {type:'train',title:'Mañana playa · fuerza + prehab',b:[
+  {h:'Fuerza (sin material)',items:['Sentadilla, zancadas, puente a una pierna']},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos si puedes anclar los pies']}]},
  {type:'train',title:'Activación',b:[
-  {h:'Trabajo',items:['Calentamiento + 3-4 sprints al 100%','Balón. Llegar fresco.']}]},
+  {h:'Trabajo',items:['Calentamiento + 3-4 sprints al 100%','Balón y toque de específico. Llegar fresco.']}]},
  {type:'rest',title:'Descanso total · 23 ago',b:[
-  {h:'Recuperación',items:['Descanso pleno. Mañana empiezas con el equipo.','Vuelves de una lesión hecho un avión, y más fuerte que antes.']}]}
+  {h:'Recuperación',items:['Descanso pleno. Mañana empiezas con el equipo.','Copenhague y nórdicos son tu rutina de por vida. Vuelves blindado.']}]}
 ]};
 
 /* ============ VÍDEOS ============ */
@@ -652,9 +621,9 @@ const VIDEOS=[
 
 /* ============ MENTAL / NUTRICIÓN ============ */
 const MANTRAS={
- 0:'Subo la escalera con cabeza. Cada porcentaje ganado, no probado. Sin prisa y sin pausa.',
- 1:'Ya corro sin miedo. Ahora construyo: potencia, sprint y fondo. Me hago incansable.',
- 2:'Afilo y llego fresco. El 24 vuelvo hecho un avión, y más fuerte que antes de la lesión.'
+ 0:'La tendinopatía se cura CARGANDO, no parando. Cada Copenhague reconstruye el tendón.',
+ 1:'Reintroduzco con cabeza. El tendón manda: dolor que no empeora, avanzo.',
+ 2:'Vuelvo tolerando y blindado. Copenhague de por vida. El 24 estoy listo.'
 };
 const GUIDES=[
  {ic:'⚡',t:'Calentamiento · antes de CADA sesión',body:`
@@ -709,21 +678,20 @@ const GUIDES=[
    <li><b>Jump squat / cargada:</b> máxima velocidad al subir, aterriza suave. Si no eres explosivo, baja el peso.</li>
    <li><b>Hip thrust:</b> aprieta glúteo arriba 1 s, no arquees la lumbar.</li></ul>
    <p><b>Regla de élite:</b> técnica perfecta antes que más peso. Un mal gesto repetido es una lesión esperando.</p>`},
- {ic:'🚑',t:'Protocolo isquio · léelo',body:`
-   <h5>Las 4 reglas de oro</h5>
-   <ul><li><b>Dolor máximo 3/10</b> durante el ejercicio. Y al día siguiente, igual o mejor. Si empeora, retrocedes un paso.</li>
-   <li><b>NO estires</b> el isquio hasta que esté curado. Estirar una rotura la agrava.</li>
-   <li><b>NO pruebes a esprintar</b> "a ver cómo va". Esa prueba es la que provoca la recaída.</li>
-   <li><b>Nórdicos siempre</b>, incluso cuando estés bien. Es lo que más reduce el riesgo de recaída.</li></ul>
-   <h5>Las fases (vía express)</h5>
-   <ul><li><b>Proteger + Cargar:</b> hecho. Isométricos y fuerza superados sin dolor.</li>
-   <li><b>Correr (sem 1-2):</b> la escalera de sprint: 60% → 70-80% → 90% → test de 100%. Sin saltar pasos.</li>
-   <li><b>Rendir (sem 3-4):</b> potencia, RSA, pliometría y vuelta a competir.</li>
-   <li><b>Afinar + Playa (sem 5-6):</b> afilar y llegar fresco al 24.</li></ul>
-   <p><b>Aunque te sientas bien, el 100% de velocidad es lo último de la escalera.</b> Ahí no hay atajo.</p>
-   <h5>Al médico (gratis, Seguridad Social) si:</h5>
-   <ul><li>Hematoma grande, no puedes contraer el músculo, no mejora en 7-10 días o va a peor.</li></ul>
-   <p><b>Los checkpoints mandan, no el calendario.</b> Si no pasas la revisión del domingo, repites la semana. Llegar tarde es mejor que recaer.</p>`},
+ {ic:'🩹',t:'Protocolo aductor · léelo',body:`
+   <p>Diagnóstico del médico: tendinopatía proximal del aductor largo. De las lesiones de ingle que MEJOR responden. Pero se cura CARGANDO el tendón, no descansando.</p>
+   <h5>Las reglas de oro</h5>
+   <ul><li><b>Dolor ≤3/10</b> durante el ejercicio, y al día siguiente igual o mejor. Si empeora, retrocedes.</li>
+   <li><b>El Copenhague es tu medicina.</b> Es lo que reconstruye el tendón. 3 días/semana mínimo.</li>
+   <li><b>NADA de pachangas mientras cargas</b> (Reparar y Cargar). El partido es lo que lo reabre. Correr en RECTA sí.</li>
+   <li><b>Copenhague de por vida.</b> Cuando estés bien, sigues o recae.</li></ul>
+   <h5>La progresión</h5>
+   <ul><li><b>Reparar:</b> isométricos (pelota entre rodillas) + Copenhague de palanca corta.</li>
+   <li><b>Cargar:</b> Copenhague completo + reintroducir cambios de dirección y chut, suaves y sin dolor.</li>
+   <li><b>Volver:</b> fútbol controlado, subiendo intensidad según tolera la ingle.</li></ul>
+   <h5>Vuelve al médico si:</h5>
+   <ul><li>En 3-4 semanas de carga bien hecha no mejora o empeora. O si aparece dolor al toser o un bulto.</li></ul>
+   <p><b>La clave del tendón:</b> no necesita estar 100% sin dolor para volver — necesita TOLERAR la carga con dolor bajo que no empeora. Se juega gestionándolo, no esperando a que desaparezca del todo.</p>`},
  {ic:'🏥',t:'Rodilla · rutina del fisio',body:`
    <p>Lo que te mandó el fisio, todos los días, hasta reevaluar en 2 semanas. Series orientativas — usa las que te dijera él.</p>
    <h5>1. Polea, pierna recta (cuádriceps/cadera)</h5>

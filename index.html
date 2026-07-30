@@ -466,117 +466,104 @@ function cellDate(week,dayIdx){return addDays(START,(week-1)*7+dayIdx);}
 /* ============ PLAN (8 semanas) ============ */
 // type: train | match | test | rest ; b = bloques {h, items:[], v?:queryYT}
 const PHASES=[
- {key:'pesado',name:'Carga pesada',weeks:'1–2',hue:'#ff3b30'},
+ {key:'acumular',name:'Acumular',weeks:'1–2',hue:'#ff3b30'},
  {key:'rendir',name:'Rendir',weeks:'3',hue:'#ff3b30'},
  {key:'playa',name:'Playa',weeks:'4',hue:'#ff3b30'}
 ];
 function phaseOf(w){return w<=2?0:(w<=3?1:2);}
 
 const W=[];
-// ===== SEMANA 1 (27 jul - 2 ago) · CARGA PESADA + escalera de chut =====
+// ===== SEMANA 1 (27 jul - 2 ago) =====
 W[1]={days:[
- {type:'train',title:'Aductor pesado + fuerza',b:[
-  {h:'Calentamiento',items:['RAMP 10 min: trote, movilidad, activación']},
-  {h:'Aductor · carga pesada y lenta',items:['Copenhague palanca LARGA (pie en el banco) 3x8/lado','Aducción en polea o deslizante 4x8 · 3 s bajando / 3 s subiendo','Isométricos 3x30 s al final'],v:'copenhagen adductor exercise tecnica'},
-  {h:'Fuerza',items:['Sentadilla 5x4 pesada (RPE 8)','Peso muerto rumano 4x6','Hip thrust 4x8'],v:'sentadilla tecnica correcta'},
-  {h:'Prehab + core',items:['Nórdicos 3x8','Circuito core 2 vueltas']}]},
- {type:'train',title:'Intervalos duros',b:[
-  {h:'Calentamiento',items:['RAMP + 4-6 progresivas subiendo del 60 al 90%']},
-  {h:'Intervalos (el motor)',items:['4 x 4 min a ritmo alto (~175-180 ppm, 4:00-4:20/km)','2-3 min de trote suave entre series','Las 4 series al mismo ritmo: si la última se cae, empezaste fuerte']},
-  {h:'Cierre',items:['5 min soltando + core']}]},
- {type:'train',title:'Fuerza-potencia + escalera de chut 1',b:[
-  {h:'Fuerza',items:['Sentadilla 4x5','Peso muerto 4x5','Jump squat 4x4 (explosivo)'],v:'jump squat tecnica correcta'},
-  {h:'Escalera de chut · peldaño 1',items:['Pases fuertes a 15-20 m, 20-30 toques','Sin dolor que empeore → mañana subes']},
-  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
- {type:'train',title:'RSA en recta',b:[
-  {h:'Calentamiento',items:['RAMP + progresivas']},
-  {h:'RSA',items:['8x30 m con 25 s de recuperación · 2 series','En recta, sin frenazos bruscos'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Core',items:['Circuito + anti-rotación (Pallof, dead bug, bird dog)']}]},
- {type:'train',title:'Aductor pesado + escalera de chut 2',b:[
-  {h:'Aductor',items:['Copenhague palanca larga CON PESO (mancuerna en cadera) 3x8/lado','Aducción con carga 4x6 lento'],v:'copenhagen adductor exercise tecnica'},
-  {h:'Escalera de chut · peldaño 2',items:['Chut a media potencia, 20-30 golpeos','Dolor ≤3/10 y mañana igual → sigues subiendo']},
-  {h:'Prehab',items:['Nórdicos 3x8']}]},
- {type:'train',title:'Cuestas + específico',b:[
-  {h:'Cuestas',items:['60 m: 3 series x 5 repes','1 min entre repes, 3-5 min entre series','Trote suave 10 min al acabar'],v:'sprints en cuesta entrenamiento'},
-  {h:'Balón',items:['Conducción y toque a velocidad, en recta']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Copenhague pesado sin dolor que empeore?','¿Chut a media potencia bien?','SÍ → semana 2: chut a tope y cortes','NO → repites peldaño, sin drama']}]}
+ {type:'rest',title:'Hecho',b:[{h:'Ya pasó',items:['Sesión de aductor y fuerza']}]},
+ {type:'rest',title:'Hecho',b:[{h:'Ya pasó',items:['Intervalos']}]},
+ {type:'rest',title:'Hecho',b:[{h:'Ya pasó',items:['Fuerza-potencia']}]},
+ {type:'train',title:'DOBLE · Fuerza inferior + Joserra S1',b:[
+  {h:'MAÑANA · Gimnasio (60 min)',items:['Calentamiento 10 min','Sentadilla 5x4 pesada (descanso 2-3 min)','Peso muerto rumano 4x6','Prensa 3x10','Elevación de talones 4x12 lento','Nórdicos 3x8','Copenhague 3x8/lado'],v:'sentadilla tecnica correcta'},
+  {h:'TARDE · Joserra S1 (55 min)',items:['10 min trote suave + estiramientos 5 min','15 min ritmo medio (160 ppm) + 3 min recuperación','15 min ritmo medio + 5 min trote suave','Core + estiramientos 20 s/ejercicio']}]},
+ {type:'train',title:'Empuje (55 min)',b:[
+  {h:'Gimnasio · empuje',items:['Calentamiento 8 min','Press banca 4x6','Press militar 4x8','Fondos en paralelas 3x8','Elevaciones laterales 3x15','Tríceps polea 3x12'],v:'press banca tecnica correcta'},
+  {h:'Core (10 min)',items:['Circuito base 2 vueltas']}]},
+ {type:'train',title:'Partido o Joserra S8',b:[
+  {h:'Si hay partido',items:['Calentamiento completo + isométricos de aductor','Empieza al 85%']},
+  {h:'Si no · S8 (55 min)',items:['5 min suave + estiramientos','40 min carrera continua a ritmo medio','Core + estiramientos']}]},
+ {type:'rest',title:'DESCANSO TOTAL',b:[{h:'Recuperación',items:['Nada. Hoy te haces fuerte.']}]}
 ]};
-// ===== SEMANA 2 (3-9 ago) · CARGA PESADA + cortes y chut a tope =====
+// ===== SEMANA 2 (3-9 ago) =====
 W[2]={days:[
- {type:'train',title:'Aductor pesado + fuerza máxima',b:[
-  {h:'Aductor',items:['Copenhague con peso 3x8/lado (sube carga)','Aducción cargada 4x6 · tempo 3-3'],v:'copenhagen adductor exercise tecnica'},
-  {h:'Fuerza',items:['Sentadilla 5x3 pesada','Peso muerto 4x4','Hip thrust 4x6'],v:'sentadilla tecnica correcta'},
-  {h:'Prehab + core',items:['Nórdicos 3x8 sin ayuda de manos','Core completo']}]},
- {type:'train',title:'Intervalos + escalera de chut 3',b:[
-  {h:'Intervalos',items:['5 x 3 min a ritmo alto + 2 min trote suave','5 min soltando']},
-  {h:'Escalera de chut · peldaño 3',items:['Chut a MÁXIMA potencia, 20 golpeos','Con calentamiento completo antes']}]},
- {type:'train',title:'Potencia + cambios de dirección',b:[
-  {h:'Potencia',items:['Jump squat cargado 5x3','CMJ 4x4','Drop jump 4x4'],v:'drop jump pliometria tecnica'},
-  {h:'Cortes · peldaño 4',items:['Cambios de dirección a intensidad media-alta','T-drill y zig-zag, progresivo'],v:'t drill agilidad futbol'},
-  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
- {type:'train',title:'RSA con cambios de dirección',b:[
-  {h:'RSA',items:['8x30 m con 25 s, ahora CON giro a mitad · 2 series'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Específico',items:['1v1 y desbordes a ritmo creciente'],v:'regate uno contra uno extremo futbol'},
-  {h:'Core',items:['Circuito + anti-rotación']}]},
- {type:'train',title:'Fuerza + aductor',b:[
-  {h:'Fuerza',items:['Sentadilla 4x4','Peso muerto rumano 4x5','Nórdicos 3x8']},
-  {h:'Aductor',items:['Copenhague con peso 3x8/lado']}]},
- {type:'match',title:'Vuelta al fútbol (controlado)',b:[
-  {h:'Antes',items:['Calentamiento MUY completo + isométricos de aductor']},
-  {h:'Partido',items:['Fútbol reducido o partido, empezando al 85%','Dolor ≤3/10 que se pasa = OK','Dolor que EMPEORA durante = sales']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Aguantaste el partido con la ingle tolerando?','SÍ → semana 3 a tope','NO → bajas un peldaño y repites']}]}
+ {type:'train',title:'DOBLE · Fuerza inferior + Joserra S3',b:[
+  {h:'MAÑANA · Gimnasio (65 min)',items:['Calentamiento 10 min','Sentadilla 5x3 pesada (descanso 2-3 min)','Peso muerto 4x4','Prensa 3x10','Elevación de talones 4x12','Nórdicos 3x8','Copenhague con peso 3x8/lado'],v:'sentadilla tecnica correcta'},
+  {h:'TARDE · Joserra S3 (60 min)',items:['10 min suave + estiramientos','18 min ritmo medio + 3 min recuperación','18 min ritmo medio + 5 min trote','Core + estiramientos']}]},
+ {type:'train',title:'Empuje (55 min)',b:[
+  {h:'Gimnasio · empuje',items:['Calentamiento 8 min','Press banca 5x5','Press militar 4x6','Press inclinado mancuernas 3x10','Elevaciones laterales 3x15','Tríceps 3x12'],v:'press banca tecnica correcta'},
+  {h:'Core (10 min)',items:['Circuito + Pallof 3x12/lado']}]},
+ {type:'train',title:'Joserra S4 (55 min)',b:[
+  {h:'Sesión única · campo',items:['10 min suave + estiramientos','15 min ritmo medio + 3 min trote','15 min ritmo medio + 3 min trote','10 min ritmo alto (180 ppm)','Core + estiramientos']}]},
+ {type:'train',title:'DOBLE · Potencia + Joserra S5',b:[
+  {h:'MAÑANA · Gimnasio (60 min)',items:['Calentamiento 12 min (con progresivas)','Contraste: sentadilla 3 reps pesadas + 5 jump squats · 3 rondas','Drop jump 4x4','Sentadilla búlgara 4x8/lado','Hip thrust 4x8','Pogos 3x30 (gemelo explosivo)','Nórdicos 3x8'],v:'jump squat tecnica correcta'},
+  {h:'TARDE · Joserra S5 (60 min)',items:['10 min suave','15 min medio + 3 min recuperación','15 min ritmo alto + 5 min trote','8 progresiones sobre 60 m','Core + estiramientos']}]},
+ {type:'train',title:'Tracción (55 min)',b:[
+  {h:'Gimnasio · tracción',items:['Calentamiento 8 min','Dominadas 4x6-8 (lastradas si te sobran)','Remo con barra 4x8','Jalón al pecho 3x10','Face pull 3x15','Curl bíceps 3x12'],v:'dominadas tecnica correcta'},
+  {h:'Core + prehab (12 min)',items:['Anti-rotación completa','Copenhague 3x8/lado']}]},
+ {type:'match',title:'Partido o Joserra S9 (cuestas)',b:[
+  {h:'Si hay partido',items:['Calentamiento MUY completo + isométricos','Empieza al 85%. Dolor que empeora = sales.']},
+  {h:'Si no · S9 · CUESTAS (55 min)',items:['Cuesta de 60 m: 3 series x 5 repeticiones','1 min entre repeticiones, 3-5 min entre series','Trote suave 10-12 min al acabar'],v:'sprints en cuesta entrenamiento'}]},
+ {type:'rest',title:'DESCANSO TOTAL',b:[
+  {h:'Checkpoint',items:['¿Amaneces recuperado o arrastrando?','¿Ingle tolerando la carga pesada?','Arrastrando → quita la doble del jueves']}]}
 ]};
-// ===== SEMANA 3 (10-16 ago) · RENDIR · pico de forma =====
+// ===== SEMANA 3 (10-16 ago) · pico =====
 W[3]={days:[
- {type:'train',title:'Velocidad punta + potencia',b:[
-  {h:'Calentamiento',items:['RAMP completo + progresivas']},
-  {h:'Velocidad',items:['Flying sprints 6x40 m al 100%','Recuperación completa entre series'],v:'tecnica de sprint velocidad'},
-  {h:'Potencia',items:['Drop jump 4x4','Bounds 4x20 m']},
-  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
- {type:'train',title:'Fuerza máxima',b:[
-  {h:'Fuerza',items:['Sentadilla 5x3 (máximo controlado)','Peso muerto 4x3','Jump squat cargado 5x3'],v:'sentadilla tecnica correcta'},
-  {h:'Prehab + core',items:['Nórdicos 3x8','Core completo']}]},
- {type:'match',title:'Partido (90-100%)',b:[
-  {h:'Partido',items:['Competición a intensidad alta','Calentamiento completo antes, sin excepción']}]},
- {type:'train',title:'RSA pura + específico',b:[
-  {h:'RSA',items:['10 min vivo + 12x (6 s sprint + 20 s trote) + 10 min suave'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Específico',items:['Centros en carrera y finalización'],v:'tecnica de centro futbol banda'},
-  {h:'Prehab',items:['Copenhague 3x8/lado']}]},
- {type:'train',title:'Contraste + agilidad',b:[
-  {h:'Complejo · 3 rondas',items:['Sentadilla 3 reps pesadas + 5 jump squats'],v:'jump squat tecnica correcta'},
-  {h:'Agilidad',items:['Cortes y reactividad a máxima intensidad']},
-  {h:'Prehab',items:['Nórdicos 3x8']}]},
- {type:'match',title:'Partido fuerte',b:[
-  {h:'Partido',items:['Último partido antes de la playa. A tope.']}]},
- {type:'rest',title:'Descanso · checkpoint',b:[
-  {h:'Revisión',items:['¿Ingle aguantando el fútbol completo?','Copenhague y nórdicos siguen SIEMPRE, aunque estés perfecto']}]}
+ {type:'train',title:'DOBLE · Fuerza máxima + Joserra S6',b:[
+  {h:'MAÑANA · Gimnasio (60 min)',items:['Calentamiento 10 min','Sentadilla 5x3 (máximo controlado)','Peso muerto 4x3','Prensa 3x10','Elevación de talones 4x15','Nórdicos 3x8','Copenhague con peso 3x8/lado'],v:'sentadilla tecnica correcta'},
+  {h:'TARDE · Joserra S6 · PIRÁMIDE (45 min)',items:['10 min suave + estiramientos','5 min máximo + 4 min trote suave','3 min máximo + 2 min trote','1 min máximo + 30 s trote','30 s máximo + 5 min recuperación','Core + estiramientos']}]},
+ {type:'train',title:'Empuje (55 min)',b:[
+  {h:'Gimnasio · empuje',items:['Calentamiento 8 min','Press banca 5x4','Press militar 4x6','Fondos lastrados 3x8','Elevaciones laterales 3x15','Tríceps 3x12'],v:'press banca tecnica correcta'},
+  {h:'Core (10 min)',items:['Completo + anti-rotación']}]},
+ {type:'train',title:'DOBLE · Tracción + Joserra S7',b:[
+  {h:'MAÑANA · Gimnasio (55 min)',items:['Calentamiento 8 min','Dominadas lastradas 4x6','Remo con barra 4x6','Jalón 3x10','Face pull 3x15','Curl bíceps 3x12'],v:'dominadas tecnica correcta'},
+  {h:'TARDE · Joserra S7 (45 min)',items:['10 min suave + estiramientos','5 x (2 min ritmo máximo + 2 min trote suave)','5 min recuperación muy suave','Core + estiramientos']}]},
+ {type:'train',title:'DOBLE · Potencia + Joserra S10 · ÚLTIMA DURA',b:[
+  {h:'MAÑANA · Gimnasio (60 min)',items:['Calentamiento 12 min','Contraste: sentadilla 2 reps pesadas + 4 saltos · 4 rondas','Drop jump 5x3','Búlgara 4x8/lado','Hip thrust 4x6','Pogos 3x30','Nórdicos 3x8'],v:'drop jump pliometria tecnica'},
+  {h:'TARDE · Joserra S10 (50 min)',items:['5 min suave','20 min ritmo medio + 5 min trote suave','10 min ritmo alto','Core + estiramientos']},
+  {h:'Nota',items:['Última sesión dura antes de Tarifa. Vacíate hoy.']}]},
+ {type:'rest',title:'Viaje a Tarifa · descanso',b:[
+  {h:'Hoy no se entrena',items:['Descanso total. Empieza el taper.','A partir de aquí: menos volumen, misma intensidad.']}]},
+ {type:'train',title:'Tarifa · opcional (25 min)',b:[
+  {h:'Si puedes por la mañana',items:['10 min calentamiento con progresivas','4-5 sprints de 30-40 m al 100%','Recuperación completa entre ellos','Copenhague 3x8/lado']},
+  {h:'Si no',items:['Descansa sin culpa. Estás en taper.']}]},
+ {type:'train',title:'Tarifa · opcional (20 min)',b:[
+  {h:'Si puedes por la mañana',items:['Fartlek suave 15 min (1 min vivo / 1 min suave)','3 sprints cortos al final','Nórdicos 3x8 si tienes dónde']},
+  {h:'Si no',items:['Descanso. Disfruta Tarifa.']}]}
 ]};
-// ===== SEMANA 4 (17-23 ago) · PLAYA · mantener y llegar fresco =====
+// ===== SEMANA 4 (17-23 ago) · PLAYA · taper, y 22-23 descanso total =====
 W[4]={days:[
- {type:'train',title:'Mañana playa · velocidad',b:[
-  {h:'Calentamiento',items:['15 min completo con progresivas']},
-  {h:'Velocidad',items:['5x40 m máximos, recuperación total'],v:'tecnica de sprint velocidad'},
-  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
- {type:'train',title:'Mañana playa · fartlek',b:[
+ {type:'train',title:'Playa · velocidad + fuerza (40 min)',b:[
+  {h:'Mañana',items:['15 min calentamiento con progresivas','5x40 m máximos, recuperación total']},
+  {h:'Fuerza sin material',items:['Búlgara 4x8/lado','Elevación de talones a una pierna 4x15','Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'train',title:'Playa · fartlek + core (35 min)',b:[
   {h:'Carrera',items:['25 min variando ritmo (1 min fuerte / 1 min suave)'],v:'fartlek entrenamiento carrera'},
-  {h:'Core',items:['Circuito + anti-rotación']}]},
- {type:'rest',title:'Descanso / baño de mar',b:[{h:'Recuperación',items:['Nadar suave. Disfruta y recupera.']}]},
- {type:'train',title:'Mañana playa · RSA en arena',b:[
-  {h:'RSA',items:['10x (6 s sprint + 20 s trote) en arena dura'],v:'repeated sprint ability entrenamiento futbol'},
-  {h:'Prehab',items:['Copenhague 3x8/lado']}]},
- {type:'train',title:'Mañana playa · fuerza sin material',b:[
-  {h:'Fuerza',items:['Sentadilla búlgara 4x8/lado','Zancadas 3x12','Puente a una pierna 3x12/lado']},
-  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos si puedes anclar los pies','Core']}]},
- {type:'train',title:'Activación',b:[
-  {h:'Trabajo',items:['Calentamiento + 4 sprints al 100%','Balón y toque. Bajar volumen, mantener intensidad.']}]},
- {type:'rest',title:'Descanso total · 23 ago',b:[
-  {h:'Recuperación',items:['Descanso pleno. Mañana empiezas con el equipo.','Llegas fuerte, entero y blindado. Copenhague y nórdicos, de por vida.']}]}
+  {h:'Core (10 min)',items:['Circuito + anti-rotación']}]},
+ {type:'rest',title:'Descanso / mar',b:[{h:'Recuperación',items:['Nadar suave. Disfruta.']}]},
+ {type:'train',title:'Playa · Joserra S13 en arena (40 min)',b:[
+  {h:'S13',items:['10 min ritmo vivo','12 x (6 s sprint + 20 s trote suave) en arena dura','10 min carrera suave'],v:'repeated sprint ability entrenamiento futbol'},
+  {h:'Prehab',items:['Copenhague 3x8/lado','Nórdicos 3x8']}]},
+ {type:'train',title:'Playa · última activación (25 min)',b:[
+  {h:'Trabajo',items:['15 min calentamiento con progresivas','4 sprints de 30 m al 100%','Copenhague 3x8/lado']},
+  {h:'Nota',items:['Última sesión antes del 24. Poco volumen, chispa alta.']}]},
+ {type:'rest',title:'DESCANSO TOTAL · 22 ago',b:[
+  {h:'Recuperación',items:['Cero. Así es como se llega fresco.']}]},
+ {type:'rest',title:'DESCANSO TOTAL · 23 ago',b:[
+  {h:'Mañana empieza',items:['Descanso pleno.','Las sesiones de Joserra hechas, fuerte y entero.','Mañana te presentas. A comerte la pretemporada.']}]}
 ]};
 
 /* ============ VÍDEOS ============ */
 const VIDEOS=[
+ {cat:'Gimnasio · tronco y gemelo',items:[
+   {n:'Elevacion de talones',c:'Gemelo: sube lento, aprieta arriba, baja controlado',q:'elevacion de talones gemelo tecnica'},
+   {n:'Pogos / saltos de tobillo',c:'Gemelo explosivo, contacto corto',q:'pogo jumps ankle stiffness drill'},
+   {n:'Press banca',c:'Escapulas atras, codos a 45 grados',q:'press banca tecnica correcta'},
+   {n:'Dominadas',c:'Traccion completa sin balanceo',q:'dominadas tecnica correcta'},
+   {n:'Remo con barra',c:'Espalda recta, tira al abdomen',q:'remo con barra tecnica correcta'}]},
  {cat:'Isquio · rehabilitación',items:[
    {n:'Isométrico de isquio',c:'Talón al suelo, empujar sin dolor',q:'isometrico isquiotibial ejercicio rehabilitacion'},
    {n:'Puente de glúteo',c:'Primer paso de carga',q:'puente de gluteo tecnica'},
@@ -633,11 +620,58 @@ const VIDEOS=[
 
 /* ============ MENTAL / NUTRICIÓN ============ */
 const MANTRAS={
- 0:'El tendon se remodela con carga PESADA y lenta. Ya no duele: toca subir, no mantener.',
- 1:'Pico de forma. Velocidad, potencia y futbol a tope. Llego hecho un toro.',
- 2:'Bajo volumen, mantengo intensidad. Llego fresco y enchufado al 24.'
+ 0:'Calidad antes que cantidad. Sesiones cortas y duras, no largas y flojas. Lunes y jueves, doble.',
+ 1:'Semana pico. Todo al maximo, pero con la cabeza puesta en llegar entero.',
+ 2:'Taper: bajo volumen, mantengo intensidad. Llego chispeante, no reventado.'
 };
 const GUIDES=[
+ {ic:'📋',t:'Ritmos de Joserra · las pulsaciones',body:`
+   <p>Las sesiones de tarde son el plan oficial del club (S1 a S13). Los ritmos que marca Joserra:</p>
+   <ul><li><b>Trote suave:</b> no pasar de <b>140 ppm</b> (60%). Debes poder hablar sin problema.</li>
+   <li><b>Ritmo medio:</b> sobre <b>160 ppm</b> (80%). Frases cortas, no conversacion.</li>
+   <li><b>Ritmo alto o maximo:</b> sobre <b>180 ppm</b> (90-100%). Dos o tres palabras como mucho.</li></ul>
+   <p>Todas sus sesiones acaban igual: <b>CORE + estiramientos 20 s por ejercicio</b>. No te lo saltes.</p>
+   <h5>Por que van dentro</h5>
+   <p>Es el trabajo que te ha mandado tu entrenador y con el que va a evaluarte. Llegar el 24 con sus 13 sesiones hechas es la mejor carta de presentacion que tienes.</p>`},
+ {ic:'🏋',t:'Como esta montado el gimnasio',body:`
+   <p>Cuatro dias distintos, no siempre lo mismo. Cada uno tiene dos partes con objetivos diferentes.</p>
+   <h5>Pesado (3-5 reps) vs volumen (8-12 reps)</h5>
+   <ul><li><b>Pesado:</b> sentadilla, peso muerto, hip thrust. Construye <b>fuerza y potencia</b>. Descanso 2-3 min.</li>
+   <li><b>Volumen:</b> prensa, extensiones, curl femoral, gemelo, bulgaras. Construye <b>musculo y resistencia muscular</b>. Descanso 60-90 s.</li>
+   <li>Necesitas las dos. Solo pesado te hace fuerte pero no te llena la pierna; solo volumen no te hace explosivo.</li></ul>
+   <h5>Los cuatro dias</h5>
+   <ul><li><b>Lunes:</b> fuerza inferior pesada + volumen de cuadriceps y gemelo + aductor.</li>
+   <li><b>Martes:</b> empuje (banca, militar, fondos, hombro, triceps) + core.</li>
+   <li><b>Jueves:</b> potencia (contraste, saltos) + unilateral.</li>
+   <li><b>Viernes:</b> traccion (dominadas, remo, face pull, biceps) + core.</li></ul>
+   <h5>Cuadriceps y gemelo</h5>
+   <p>Joserra los pide expresamente. El gemelo es propulsion pura en el sprint: elevacion de talones lenta con carga, y pogos para la parte explosiva.</p>`},
+ {ic:'🕑',t:'Tiempo y carga semanal',body:`
+   <p>Unas <b>8 horas por semana</b>, repartidas para que cada sesion tenga calidad. Solo dos dias son dobles.</p>
+   <h5>La semana</h5>
+   <ul><li><b>Lunes:</b> gimnasio 65 min (manana) + Joserra 60 min (tarde). <b>Doble.</b></li>
+   <li><b>Martes:</b> empuje, 55 min. Unica.</li>
+   <li><b>Miercoles:</b> Joserra, 55 min. Unica.</li>
+   <li><b>Jueves:</b> potencia 60 min (manana) + Joserra 60 min (tarde). <b>Doble.</b></li>
+   <li><b>Viernes:</b> traccion, 55 min. Unica.</li>
+   <li><b>Sabado:</b> partido, o sesion de Joserra.</li>
+   <li><b>Domingo:</b> descanso total.</li></ul>
+   <h5>Por que no mas</h5>
+   <ul><li>Una sesion de gimnasio de 2 h <b>pierde calidad</b> en la ultima media hora: repeticiones malas y fatiga sin estimulo.</li>
+   <li>Lo que cuenta es la <b>carga semanal total</b>, no el numero de sesiones.</li>
+   <li>Las tardes son solo Joserra: sus sesiones ya cubren fondo, ritmo alto y RSA. Meterle mas encima era duplicar.</li></ul>
+   <h5>Si vas justo de tiempo un dia</h5>
+   <ul><li>Recorta el <b>volumen accesorio</b> (prensa, elevaciones laterales, curl), nunca el trabajo pesado ni el prehab.</li>
+   <li><b>Nunca sacrifiques</b> Copenhague y nordicos. Son 10 min y son tu seguro.</li>
+   <li>Si solo tienes 30 min: calentamiento + el ejercicio pesado principal + prehab. Mejor eso que nada.</li></ul>
+   <h5>Cuando bajar carga</h5>
+   <ul><li>Si amaneces peor dos dias seguidos, duermes mal o rindes menos en velocidad: <b>quita la doble del jueves</b> esa semana.</li>
+   <li>En dias de doble, come <b>300-400 kcal extra</b>, casi todo carbohidrato.</li></ul>
+   <h5>El taper (del 14 al 23 de agosto)</h5>
+   <ul><li>Del 14 al 16 estas en Tarifa y del 22 al 23 descansas: son <b>10 dias de carga baja</b> antes del 24. Bien planificado, eso es lo que te hace llegar fresco.</li>
+   <li><b>La regla del taper: baja el VOLUMEN, manten la INTENSIDAD.</b> Menos minutos, pero con sprints al 100% dentro.</li>
+   <li>Si esos 10 dias solo haces trote suave o nada, llegas apagado. Con 20-25 min y 4 sprints maximos, llegas chispeante.</li>
+   <li><b>22 y 23 descanso total.</b> Dos dias sin nada antes de empezar es lo optimo, no pereza.</li></ul>`},
  {ic:'⚡',t:'Calentamiento · antes de CADA sesión',body:`
    <p>10-12 min, sin excepción. Casi todas las roturas musculares llegan en frío. Protocolo RAMP.</p>
    <h5>1 · Elevar pulso (2-3 min)</h5>
@@ -703,7 +737,7 @@ const GUIDES=[
    <li><b>Volver:</b> fútbol controlado, subiendo intensidad según tolera la ingle.</li></ul>
    <h5>Vuelve al médico si:</h5>
    <ul><li>En 3-4 semanas de carga bien hecha no mejora o empeora. O si aparece dolor al toser o un bulto.</li></ul>
-   <p><b>La clave del tendón:</b> no necesita estar 100% sin dolor para volver — necesita TOLERAR la carga con dolor bajo que no empeora. Se juega gestionándolo, no esperando a que desaparezca del todo.</p><h5>Carga pesada y lenta (lo que de verdad cura)</h5><ul><li>Copenhague de palanca LARGA (pie en el banco). Cuando lo domines, con peso.</li><li>Aduccion con carga: 3 s bajando / 3 s subiendo. El tempo lento es la clave.</li><li>Quedarse corto de carga es tan malo como pasarse. Si ya no duele, SUBE.</li></ul><h5>Escalera de retorno al futbol</h5><ul><li><b>1.</b> Pases fuertes &rarr; <b>2.</b> chut a media potencia &rarr; <b>3.</b> chut a tope &rarr; <b>4.</b> cortes y cambios de direccion &rarr; <b>5.</b> partido.</li><li>Subes de peldano si el dolor es &le;3/10 y al dia siguiente estas igual o mejor.</li><li>Gimnasio y correr en recta van a tope desde ya. Lo que sube por peldanos es chutar y cortar.</li></ul>`},
+   <p><b>La clave del tendón:</b> no necesita estar 100% sin dolor para volver — necesita TOLERAR la carga con dolor bajo que no empeora. Se juega gestionándolo, no esperando a que desaparezca del todo.</p><h5>Carga pesada y lenta (lo que de verdad cura)</h5><ul><li>Copenhague de palanca LARGA (pie en el banco). Cuando lo domines, con peso.</li><li>Aduccion con carga: 3 s bajando / 3 s subiendo. El tempo lento es la clave.</li><li>Quedarse corto de carga es tan malo como pasarse. Si ya no duele, SUBE.</li></ul><h5>Escalera de retorno al futbol</h5><ul><li><b>1.</b> Correr en recta &rarr; <b>2.</b> cortes suaves &rarr; <b>3.</b> cortes a intensidad alta &rarr; <b>4.</b> partido.</li><li>Subes de peldano si el dolor es &le;3/10 y al dia siguiente estas igual o mejor.</li><li>Gimnasio y correr en recta van a tope desde ya. Lo que sube por peldanos es chutar y cortar.</li></ul>`},
  {ic:'🏥',t:'Rodilla · rutina del fisio',body:`
    <p>Lo que te mandó el fisio, todos los días, hasta reevaluar en 2 semanas. Series orientativas — usa las que te dijera él.</p>
    <h5>1. Polea, pierna recta (cuádriceps/cadera)</h5>
